@@ -7,7 +7,14 @@ All the operations for this assignment are based on Macbook so the commands will
 
 I created my VPS into CSC cPouta. And the documented process are based on that.
 
+## Result:
+http://86.50.231.121/
+
+## Process:
+
 ### 1. Creating the VPS
+**Purpose:** *Create a virtual server in the cloud that can host and run applications and services.*
+
 
 - Set up CSC account using credentials, it is free for students
     - Create account on this page https://my.csc.fi/welcome, use Haka credentials to signup.
@@ -32,6 +39,7 @@ I created my VPS into CSC cPouta. And the documented process are based on that.
             - 80 (HTTP)
         
 ### 2. Connecting to the VPS with SSH
+**Purpose:** *Establish a secure remote connection to the VPS and manage the server from the local computer.*
 
 - Create a pem file to store keypair
     - `touch ~/Desktop/mykey.pem` - This will create a .pem file on desktop
@@ -41,21 +49,53 @@ I created my VPS into CSC cPouta. And the documented process are based on that.
 - Connect to server
     - `ssh -i ~/.ssh/csc-key.pem ubuntu@your own public IP` - You can check the IP from Instance
 
-### 3. Update the Linux system (Install or Update Apache)
+### 3. Update the Linux system
 
-- 
+- Retrieve the latest package list from the Ubuntu software repositories.
+    - `sudo apt update`
+    - `sudo apt upgrade -y`
 
 ### 4. Install the Web Server
 
+- If you have Apache 2 on your machine
+    - `apache2 -v` - Check if you have, continue the step
+    - `sudo systemctl status apache2` - Check the status of Apache2
+- If you don't have Apache 2
+    - `sudo apt install apache2` - Install Apache2
+    - `sudo systemctl status apache2` - Check the status of Apache2
+
 ### 5. Testing the Web Server
 
+- Check if everything works on the browser:
+    - http://your.public.IP/
 
 ### 6. Creating My Own Website
-**bold**
 
-### 7. Testing My Website
-`Pirce of code`
+- I created a html and Css to simply test if the connection works, you can see the code from the follow screen shots
+    - ![html](screenshots/html.png)
+    - ![css](screenshots/css.png)
+
+### 7. Testing My Website (How to load own site to server)
+
+- From local machine to Ubuntu server
+    - `scp -i ~/.ssh/csc-key.pem -r "/file path/"* ubuntu@public IP:/tmp/` - Temporarily copy the files from local machine to the `/tmp` directory on the Ubuntu server.
+    - `ssh -i ~/.ssh/csc-key.pem ubuntu@@public IP` - Enter server
+    - `ls/tmp` - Check if all the files are under `/tmp` directory
+
+- Deploy the website files 
+    - `sudo cp /tmp/index.html /var/www/html/` 
+    - `sudo cp /tmp/style.css  /var/www/html/` 
+
+- Check if all files are deployed and the site has changed
+    - `ls -l /var/www/html/` 
 
 ### 8. Final Result
 
-### 9. Summary
+- My own site after deployment
+    - http://86.50.231.121/
+
+### 9. Summary (Learning outcome)
+- [x] Know how to create cPouta project, services and Virtual machine
+- [x] Know how to connect VPM with SSH
+- [x] Know how to update Linux and install the web server
+- [x] Know how to deploy from own machine to server
