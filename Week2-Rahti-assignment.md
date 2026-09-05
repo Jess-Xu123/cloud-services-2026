@@ -223,50 +223,57 @@ After updating `index.html` in the `Week2` directory and pushing the changes to 
 
 ---
 
-### 2. Root Cause Analysis
+## 2. Root Cause Analysis
 
-By inspecting the `BuildConfig` YAML configuration in Rahti, the `spec.source.git` block was set as:
-
-````yaml
-source:
-  type: Git
-  git:
-    uri: '[https://github.com/Jess-Xu123/cloud-services-2026.git](https://github.com/Jess-Xu123/cloud-services-2026.git)'
-  contextDir: Week2
-```
-
-Branch Mismatch: OpenShift/Rahti defaults to monitoring the master branch if no explicit ref field is specified under git.
-
-Event Drop: When code was pushed to GitHub's default main branch, GitHub successfully triggered the Webhook payload (refs/heads/main), but Rahti silently ignored the request because it was strictly configured to listen for changes on master.
-
-3. Solution & Steps Taken
-Step 1: Update BuildConfig in Rahti
-Added ref: main under spec.source.git in the BuildConfig YAML file:
+By inspecting the `BuildConfig` YAML configuration in Rahti, the
+`spec.source.git` block was set as follows:
 
 ```yaml
 source:
   type: Git
   git:
-    uri: '[https://github.com/Jess-Xu123/cloud-services-2026.git](https://github.com/Jess-Xu123/cloud-services-2026.git)'
-    ref: main  # Explicitly targeting the main branch
-  contextDir: Week2
+    uri: https://github.com/Jess-Xu123/cloud-services-2026.git
+  contextDir: Week 2
 ```
 
-Step 2: Update index.html
-Modified Week2/index.html to reflect the updated content:
+**Branch mismatch:** OpenShift/Rahti defaults to monitoring the `master` branch
+when no explicit `ref` field is specified under `git`.
 
-Edited index.html locally / via GitHub editor.
+**Event drop:** When code was pushed to GitHub's default `main` branch, GitHub
+successfully sent a webhook payload for `refs/heads/main`, but Rahti ignored the
+request because it was configured to listen for changes on `master`.
 
-Committed and pushed changes to the main branch.
+## 3. Solution and Steps Taken
 
-Step 3: Verification
-GitHub Webhooks: Checked Settings -> Webhooks -> Recent Deliveries in GitHub and confirmed HTTP 200/201 OK responses upon push.
+### Step 1: Update the BuildConfig in Rahti
 
-Rahti Builds: Verified that a new build (e.g., #6) was automatically triggered under Builds -> Builds in the Rahti Web Console.
+Added `ref: main` under `spec.source.git` in the BuildConfig YAML file:
 
-Site Verification: Refreshed the live endpoint https://cloud-services-2026-week2-assignment.2.rahtiapp.fi/ and verified that the updated content rendered correctly.
+```yaml
+source:
+  type: Git
+  git:
+    uri: https://github.com/Jess-Xu123/cloud-services-2026.git
+    ref: main
+  contextDir: Week 2
+```
 
-## Q&A and Troubleshooting
+### Step 2: Update `index.html`
+
+Modified `Week 2/index.html` to reflect the updated content, then committed
+and pushed the changes to the `main` branch.
+
+### Step 3: Verification
+
+- **GitHub Webhooks:** Checked **Settings -> Webhooks -> Recent Deliveries** in
+  GitHub and confirmed HTTP 200/201 responses after the push.
+- **Rahti Builds:** Verified that a new build, such as build `#6`, was
+  automatically triggered under **Builds -> Builds** in the Rahti Web Console.
+- **Site Verification:** Refreshed the live endpoint and verified that the
+  updated content rendered correctly:
+  <https://cloud-services-2026-week2-assignment.2.rahtiapp.fi/>.
+
+## Q&A
 
 ### Q1: Why did `oc get pods` show four Pods after scaling to three?
 
@@ -279,22 +286,3 @@ The CLI output lists raw fully qualified domain names (FQDNs) in the `HOST/PORT`
 ### Q3: How can `.DS_Store` files uploaded during Week 1 be cleaned up?
 
 Deleting local files does not remove them from Git's remote history. Running `git rm -r --cached .DS_Store` untracks the file from the remote GitHub repository while keeping local workspace settings intact.
-
-## Real-World IT Industry Insights
-
-### Multi-Stage Builds and Unprivileged Images
-
-In enterprise production environments, running containers as root is strictly prohibited by security compliance standards (for example, ISO 27001 and SOC 2). Using hardened, non-root base images such as `nginxinc/nginx-unprivileged` is standard practice to mitigate container breakout attacks.
-
-### Monorepo Directory Context (`--context-dir`)
-
-Organizations frequently maintain multi-service applications within a single Git repository. Tools such as OpenShift and Kubernetes CI/CD pipelines use context directories to build microservices independently without cross-contaminating source code.
-
-### Edge TLS Termination
-
-Offloading SSL/TLS decryption to the cluster ingress router (Edge Route) reduces CPU overhead on backend containers, allowing workload Pods to dedicate resources to application logic.
-
-### Declarative State and Reconciliation Loops
-
-Modern cloud operations rely on declarative infrastructure. Engineers state the desired outcome (for example, "maintain three replicas"), and the orchestrator continuously runs reconciliation loops to ensure reality matches the specification automatically.
-````
