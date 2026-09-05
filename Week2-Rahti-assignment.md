@@ -215,6 +215,57 @@ oc get pods
 
 The deleted Pod entered the `Terminating` state, and OpenShift automatically provisioned a replacement Pod (`cloud-services-2026-77cd8d747c-gwjbj`) within four seconds.
 
+## Troubleshooting & Updating `index.html`
+
+### 1. Issue Encountered
+
+After updating `index.html` in the `Week2` directory and pushing the changes to the `main` branch on GitHub, the updated website did not automatically deploy to Rahti (`https://cloud-services-2026-week2-assignment.2.rahtiapp.fi/`), despite having configured the GitHub Webhook properly.
+
+---
+
+### 2. Root Cause Analysis
+
+By inspecting the `BuildConfig` YAML configuration in Rahti, the `spec.source.git` block was set as:
+
+````yaml
+source:
+  type: Git
+  git:
+    uri: '[https://github.com/Jess-Xu123/cloud-services-2026.git](https://github.com/Jess-Xu123/cloud-services-2026.git)'
+  contextDir: Week2
+```
+
+Branch Mismatch: OpenShift/Rahti defaults to monitoring the master branch if no explicit ref field is specified under git.
+
+Event Drop: When code was pushed to GitHub's default main branch, GitHub successfully triggered the Webhook payload (refs/heads/main), but Rahti silently ignored the request because it was strictly configured to listen for changes on master.
+
+3. Solution & Steps Taken
+Step 1: Update BuildConfig in Rahti
+Added ref: main under spec.source.git in the BuildConfig YAML file:
+
+```yaml
+source:
+  type: Git
+  git:
+    uri: '[https://github.com/Jess-Xu123/cloud-services-2026.git](https://github.com/Jess-Xu123/cloud-services-2026.git)'
+    ref: main  # Explicitly targeting the main branch
+  contextDir: Week2
+```
+
+Step 2: Update index.html
+Modified Week2/index.html to reflect the updated content:
+
+Edited index.html locally / via GitHub editor.
+
+Committed and pushed changes to the main branch.
+
+Step 3: Verification
+GitHub Webhooks: Checked Settings -> Webhooks -> Recent Deliveries in GitHub and confirmed HTTP 200/201 OK responses upon push.
+
+Rahti Builds: Verified that a new build (e.g., #6) was automatically triggered under Builds -> Builds in the Rahti Web Console.
+
+Site Verification: Refreshed the live endpoint https://cloud-services-2026-week2-assignment.2.rahtiapp.fi/ and verified that the updated content rendered correctly.
+
 ## Q&A and Troubleshooting
 
 ### Q1: Why did `oc get pods` show four Pods after scaling to three?
@@ -246,3 +297,4 @@ Offloading SSL/TLS decryption to the cluster ingress router (Edge Route) reduces
 ### Declarative State and Reconciliation Loops
 
 Modern cloud operations rely on declarative infrastructure. Engineers state the desired outcome (for example, "maintain three replicas"), and the orchestrator continuously runs reconciliation loops to ensure reality matches the specification automatically.
+````
