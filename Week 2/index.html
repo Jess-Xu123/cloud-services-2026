@@ -146,11 +146,29 @@
                             Docker)
                             containers?</p>
                         <p class="card-text"><strong>Answer:</strong></p>
-                        <p>Some information security risks when using
-                            third-party
-                            containers include potential vulnerabilities in the container images, lack of visibility
-                            into the
-                            container's contents and behavior, and the risk of running untrusted code.</p>
+                        <p>Using third-party containers introduces critical software and
+                            infrastructure security risks if they are not verified or configured properly.
+                            According to Chainguard (2025), key security risks include:
+                        </p>
+                        <p>
+                            <b>1. Known Vulnerabilities in the Base Image:</b>
+                            Third-party container images downloaded from public repositories often contain outdated
+                            system packages or unpatched software libraries with known common vulnerabilities and
+                            exposures. Attackers can easily use the flaws to break into the application.
+                        </p>
+                        <p><b>2. Hidden Malicious Code:</b>
+                            unsafe containers can carry hidden bad scripts, such as bitcoin miners that steal your
+                            computer's power, or backdoors that give attackers full remote control.
+                        </p>
+                        <p><b>3. Leaked Passwords and Dangerous Configurations:</b>
+                            Container creators often accidentally leave secret keys or passwords inside the container
+                            files. Also, sharing sensitive host folder access with a container gives attackers a direct
+                            key to control the background Docker system.
+                        </p>
+                        <p><b>4. Too Much Authority (Container Escape):</b>
+                            If a container is given high administrative access (like the --privileged flag), an attacker
+                            inside the container can break out of its sandbox and control your entire computer system.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -164,11 +182,26 @@
                             development
                         </p>
                         <p class="card-text"><strong>Answer:</strong></p>
-                        <p>Some benefits of IaC include improved
-                            consistency and
-                            reliability, faster deployment times, better collaboration between teams, and easier
-                            management and
-                            scaling of infrastructure.</p>
+                        <p><i>"Infrastructure as Code (IaC) is a practice of transforming infrastructure blueprints into
+                                executable code." (Port, n.d.)</i> Instead of manually setting up cloud resources
+                            through a graphical user interface, infrastructure can be managed using code files, acting
+                            like a master blueprint that automates setup.</p>
+                        <p> Key benefits of IaC for modern software development include:</p>
+                        <p><b> 1. Speed and Automation:</b> Development teams can automatically provision and destroy
+                            complete infrastructure in minutes rather than days by running automation scripts.</p>
+                        <p><b> 2. Consistency and Reduce Human Error:</b> By removing manual configuration steps, IaC
+                            guarantees that environments are created identically, eliminating configuration drift and
+                            human mistakes.</p>
+                        <p><b> 3. Version Control and Traceability:</b> Since infrastructure is written as code, it can
+                            be tracked, audited, and reviewed using version control tools like Git, enabling instant
+                            rollbacks if a failure occurs.</p>
+                        <p><b> 4. Cost Efficiency and Optimization:</b> Cloud resources can be dynamically created only
+                            when needed and destroyed immediately when idle (such as shutting down test environments
+                            overnight), significantly reducing operational costs.</p>
+                        <p><b>Company Example:</b></p>
+                        <p> Company like Netflix heavily rely on IaC tools (e.g., Terraform) to automatically manage,
+                            scale, and deploy thousands of servers globally on AWS to serve millions of streaming users
+                            without manual intervention.</p>
                     </div>
                 </div>
             </div>
@@ -202,6 +235,14 @@
                                 Patten, D. (2024, October 6). Serverless architecture: Pros,
                                 cons, and use cases. Medium.
                                 https://medium.com/@dave-patten/serverless-architecture-pros-cons-and-use-cases-4a0769744ca2
+                            </li>
+                            <li>Chainguard. (2025, September 12). Top 7 Docker security risks and best practices.
+                                Chainguard Supply Chain Security 101.
+                                https://www.chainguard.dev/supply-chain-security-101/top-7-docker-security-risks-and-best-practices
+                            </li>
+                            <li>
+                                Port. (n.d.). What is Infrastructure as Code? Benefits & challenges. Port Glossary.
+                                https://www.port.io/glossary/infrastructure-as-code
                             </li>
                         </ul>
 
