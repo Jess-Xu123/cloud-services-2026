@@ -40,35 +40,19 @@ The primary goal was to experience core cloud-native features: non-root containe
 
 ```
 
-### Comparison:Week 1 (VPS Deployment) VS Week 2 (Containerized Deployment)
+### Comparison: Week 1 (VPS Deployment) vs. Week 2 (Containerized Deployment)
 
-```text
-+-----------------------------------------------------------------------------------+
-|                        Week 1 (VM 虚拟机) vs Week 2 (云原生容器)                  |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  [ Week 1: VM 虚拟机模式 ]                                                        |
-|  +-----------------------------------------------------------------------------+  |
-|  | 硬件 -> 宿主机 OS -> 虚拟机管理软件 -> 完整客体 OS (很重) -> Web 软件           |  |
-|  +-----------------------------------------------------------------------------+  |
-|  缺点: 启动慢 (几分钟)、占用资源大、难以秒级扩容和自动修复。
-|  比喻：盖了VM大别墅，只卖汉堡，如果之后向扩展生意，要一个一个盖大别墅，非常浪费钱和时间
-|                                                                                   |
-|  -------------------------------------------------------------------------------  |
-|                                                                                   |
-|  [ Week 2: Docker + Rahti 容器模式 ]                                             |
-|  +-----------------------------------------------------------------------------+  |
-|  | 你的电脑 (M1 Mac) -> GitHub (设计图) -> Rahti 大队长 (自动组装轻量餐车)     |  |
-|  +-----------------------------------------------------------------------------+  |
-|                                         |                                         |
-|                                         v                                         |
-|  +-----------------------------------------------------------------------------+  |
-|  | 运行在云端的 3 个轻量 Pod (秒级启动 / 损坏 4 秒内自动重建 / 公网 HTTPS 访问)   |  |
-|  +-----------------------------------------------------------------------------+  |
-|  比喻：把汉堡店做成了标准的餐车(Docker container) 并且只放了做汉堡必须的食材(HTML)和煎锅(nginx)                                                                             |
-+-----------------------------------------------------------------------------------+
+| Aspect | Week 1: VM deployment | Week 2: Docker + Rahti deployment |
+| --- | --- | --- |
+| Architecture | Hardware -> host OS -> hypervisor -> complete guest OS -> web software | Local Mac -> GitHub -> Rahti -> containerized application |
+| Resource usage | A full guest operating system is relatively heavy. | Lightweight Pods contain only the application and its runtime dependencies. |
+| Startup and scaling | Startup takes minutes, and scaling requires provisioning additional VMs. | Pods start quickly and can be scaled to three replicas with `oc scale`. |
+| Recovery | Failed instances require manual intervention. | OpenShift automatically recreates a deleted Pod within seconds. |
+| Networking | The application is exposed from the VM. | A Service provides internal load balancing, and an Edge Route provides public HTTPS access. |
 
-```
+In short, Week 1 was like building a large hamburger restaurant for every
+instance, while Week 2 packages the application as a standardized food truck:
+each Docker container includes only the required HTML files and Nginx runtime.
 
 ### Technical Concept Breakdown
 
@@ -157,7 +141,8 @@ oc project week2-assignment
 
 ### 5. Build, Deploy, and Route Configuration
 
-Triggered an automated build pointing directly to the Week 2 subdirectory using --context-dir, then created an Edge TLS route:
+Triggered an automated build pointing directly to the Week 2 subdirectory using
+`--context-dir`, then created an Edge TLS route:
 
 ```bash
 # Build and deploy application from sub-directory
@@ -177,8 +162,8 @@ oc get route
 #### Route output
 
 ```text
-NAME HOST/PORT SERVICES PORT TERMINATION WILDCARD
-cloud-services-2026 cloud-services-2026-week2-assignment.2.rahtiapp.fi cloud-services-2026 8080-tcp edge/Redirect None
+NAME                 HOST/PORT                                      SERVICES             PORT       TERMINATION   WILDCARD
+cloud-services-2026  cloud-services-2026-week2-assignment.2.rahtiapp.fi  cloud-services-2026  8080-tcp   edge/Redirect  None
 ```
 
 **Public domain:** <https://cloud-services-2026-week2-assignment.2.rahtiapp.fi>
@@ -214,6 +199,55 @@ oc get pods
 ```
 
 The deleted Pod entered the `Terminating` state, and OpenShift automatically provisioned a replacement Pod (`cloud-services-2026-77cd8d747c-gwjbj`) within four seconds.
+
+## Root Cause Analysis
+
+By inspecting the `BuildConfig` YAML configuration in Rahti, the
+`spec.source.git` block was set as follows:
+
+```yaml
+source:
+  type: Git
+  git:
+    uri: https://github.com/Jess-Xu123/cloud-services-2026.git
+  contextDir: Week 2
+```
+
+**Branch mismatch:** OpenShift/Rahti defaults to monitoring the `master` branch
+when no explicit `ref` field is specified under `git`.
+
+**Event drop:** When code was pushed to GitHub's default `main` branch, GitHub
+successfully sent a webhook payload for `refs/heads/main`, but Rahti ignored the
+request because it was configured to listen for changes on `master`.
+
+## Solution and Steps Taken
+
+### Step 1: Update the BuildConfig in Rahti
+
+Added `ref: main` under `spec.source.git` in the BuildConfig YAML:
+
+```yaml
+source:
+  type: Git
+  git:
+    uri: https://github.com/Jess-Xu123/cloud-services-2026.git
+    ref: main
+  contextDir: Week 2
+```
+
+### Step 2: Update `index.html`
+
+Modified `Week 2/index.html`, committed the changes, and pushed them to the
+`main` branch.
+
+### Step 3: Verify the deployment
+
+- **GitHub Webhooks:** Checked **Settings -> Webhooks -> Recent Deliveries** and
+  confirmed successful HTTP 200/201 responses after the push.
+- **Rahti Builds:** Verified that a new build, such as build `#6`, was
+  automatically triggered under **Builds -> Builds** in the Rahti Web Console.
+- **Site:** Refreshed the live endpoint and verified that the updated content
+  rendered correctly: <https://cloud-services-2026-week2-assignment.2.rahtiapp.fi/>.
 
 ## Q&A and Troubleshooting
 
