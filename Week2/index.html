@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2 Assignment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+<body>
+
+    <div class="container my-4">
+        <h1 class="mb-3">Week 2 Assignment</h1>
+        <p>Here are the 4 questions and answers for the week 2 assignment.</p>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Question 1</h4>
+                        <p class="card-text fw-bold">Compare application containers to microservices</p>
+                        <p class="card-text">
+                            <strong>Answer:</strong>
+                        </p>
+                        <p><i>"Containerized applications are applications run in isolated packages of code called
+                                containers." (Google Cloud, n.d.)</i></p>
+                        <p>A container is like a small, independent box. It puts the software code and everything it
+                            needs into one place.
+                            Considering it as a lunch box, it has the food (the application) and all the utensils (the
+                            dependencies) needed to eat it.
+                            You can take this lunch box anywhere.
+                        </p>
+                        <p><i>"Microservices is an architecture where an application is divided into small, independent
+                                services that communicate over a network. Each service handles a specific function and
+                                can be
+                                developed and deployed separately." (GeeksforGeeks, 2026)</i></p>
+                        <p>Microservices is like a food market where each vendor specializes in one type of food.
+                            Similarly, each microservice specializes in one specific function.</p>
+                        <p><b>The main difference lies in their focus:</b></p>
+                        <p>Microservices represent an <b>architectural design</b> that
+                            breaks a large application into smaller business functional units, whereas application
+                            containers are a <b>packaging and deployment technology</b>.
+                            In practice, they complement each
+                            other—containers are the ideal lightweight environments used to host, deploy, and scale
+                            individual microservices independently.</p>
+                        <p>In the IT industry, companies like Amazon combine them in practice (Aumann & Banelis, 2023):
+                        </p>
+                        <p>
+                            1. Business Splitting (Microservices): Architects divide a complex e-commerce system into
+                            dozens of independent microservices (e.g., user profile, shopping cart, payment). Each
+                            service is built and managed by a small dedicated team.
+                        </p>
+                        <p>
+                            2. Packaging & Isolation (Containers): Developers use tools like Docker to package each
+                            microservice and its dependencies into a container image. This guarantees that code runs
+                            identically on a developer's local Mac and on cloud production servers like AWS or Google
+                            Cloud.
+                        </p>
+                        <p>
+                            3. Auto-scaling (Kubernetes): During high-traffic events like Black Friday, container
+                            orchestration tools(Kubernetes) automatically scale up the specific microservice container
+                            (e.g., payment service) from 2 to 200 instances to handle the spike, and scale back down
+                            when traffic normalizes to save costs.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Question 2</h4>
+                        <p class="card-text fw-bold">Explain what is serverless architecture?</p>
+                        <p class="card-text"><strong>Answer:</strong></p>
+                        <p>
+                            <i>
+                                "Serverless architecture is a cloud computing model where the
+                                cloud provider manages the underlying infrastructure,
+                                including servers, storage, and networking. Developers can
+                                focus on writing and deploying application
+                                code."(GeeksforGeeks, 2026)
+                            </i>
+                        </p>
+                        <p>
+                            Serverless doesn't mean there are no servers literally, it means
+                            that the developers don't need to manage the servers.
+                        </p>
+                        <p>
+                            Legacy server (traditional server) is like owning a car, no
+                            matter you drive to work or not, you have to pay for the
+                            insurance, maintenance, and other associated costs.
+                        </p>
+                        <p>
+                            Serverless architecture is like using a Uber or Bolt, you don't
+                            need to worry about the maintenance. Only when you need to go
+                            somewhere, you pay for the ride. Otherwise, you don't have to
+                            pay anything.
+                        </p>
+                        <p>In IT industry practices:</p>
+                        <p>
+                            1. Event-Driven Execution: Code runs only when triggered by
+                            specific user requests or system events (e.g., uploading an
+                            image or clicking a button).
+                        </p>
+                        <p>
+                            2. Pay-per-Use Billing: Unlike traditional cloud servers that
+                            charge a continuous monthly fee for idle time, serverless
+                            charges strictly for the exact millisecond duration that the
+                            code executes.
+                        </p>
+                        <p>
+                            3. Automatic Scaling and Zero Operations: The cloud system
+                            instantly scales from zero to thousands of concurrent executions
+                            during high-traffic spikes without requiring manual
+                            infrastructure setup or operating system maintenance.
+                        </p>
+                        <p>
+                            However, serverless also has some limitations (Patten, 2024):
+                        </p>
+                        <ul>
+                            <li>
+                                Higher costs at large scale: for high-volume workloads, the
+                                pay-per-use model can become significantly more expensive than
+                                running dedicated servers or containerized applications (Dave
+                                Patten, 2024). Imagine it is cheap when you occasionally use
+                                Uber/Bolt to go somewhere. But if you have a delivery company,
+                                the bill will be much bigger.
+                            </li>
+                            <li>
+                                Cold starts & performance latency: If a function hasn't been
+                                used for a while, the cloud provider needs time to wake it up,
+                                which can cause delays for end-users.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Question 3</h4>
+                        <p class="card-text fw-bold">List some information security risks when using third party (for
+                            example
+                            Docker)
+                            containers?</p>
+                        <p class="card-text"><strong>Answer:</strong></p>
+                        <p>Using third-party containers introduces critical software and
+                            infrastructure security risks if they are not verified or configured properly.
+                            According to Chainguard (2025), key security risks include:
+                        </p>
+                        <p>
+                            <b>1. Known Vulnerabilities in the Base Image:</b>
+                            Third-party container images downloaded from public repositories often contain outdated
+                            system packages or unpatched software libraries with known common vulnerabilities and
+                            exposures. Attackers can easily use the flaws to break into the application.
+                        </p>
+                        <p><b>2. Hidden Malicious Code:</b>
+                            unsafe containers can carry hidden bad scripts, such as bitcoin miners that steal your
+                            computer's power, or backdoors that give attackers full remote control.
+                        </p>
+                        <p><b>3. Leaked Passwords and Dangerous Configurations:</b>
+                            Container creators often accidentally leave secret keys or passwords inside the container
+                            files. Also, sharing sensitive host folder access with a container gives attackers a direct
+                            key to control the background Docker system.
+                        </p>
+                        <p><b>4. Too Much Authority (Container Escape):</b>
+                            If a container is given high administrative access (like the --privileged flag), an attacker
+                            inside the container can break out of its sandbox and control your entire computer system.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Question 4</h4>
+                        <p class="card-text fw-bold">List some benefits of IaC (Infrastructure as Code) for modern
+                            software
+                            development
+                        </p>
+                        <p class="card-text"><strong>Answer:</strong></p>
+                        <p><i>"Infrastructure as Code (IaC) is a practice of transforming infrastructure blueprints into
+                                executable code." (Port, n.d.)</i> Instead of manually setting up cloud resources
+                            through a graphical user interface, infrastructure can be managed using code files, acting
+                            like a master blueprint that automates setup.</p>
+                        <p> Key benefits of IaC for modern software development include:</p>
+                        <p><b> 1. Speed and Automation:</b> Development teams can automatically provision and destroy
+                            complete infrastructure in minutes rather than days by running automation scripts.</p>
+                        <p><b> 2. Consistency and Reduce Human Error:</b> By removing manual configuration steps, IaC
+                            guarantees that environments are created identically, eliminating configuration drift and
+                            human mistakes.</p>
+                        <p><b> 3. Version Control and Traceability:</b> Since infrastructure is written as code, it can
+                            be tracked, audited, and reviewed using version control tools like Git, enabling instant
+                            rollbacks if a failure occurs.</p>
+                        <p><b> 4. Cost Efficiency and Optimization:</b> Cloud resources can be dynamically created only
+                            when needed and destroyed immediately when idle (such as shutting down test environments
+                            overnight), significantly reducing operational costs.</p>
+                        <p><b>Company Example:</b></p>
+                        <p> Company like Netflix heavily rely on IaC tools (e.g., Terraform) to automatically manage,
+                            scale, and deploy thousands of servers globally on AWS to serve millions of streaming users
+                            without manual intervention.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Reference:</h4>
+                        <p>
+                        <ul>
+                            <li>
+                                Google Cloud. (n.d.). What are containers? Google Cloud.
+                                https://cloud.google.com/containers
+                            </li>
+                            <li>
+                                GeeksforGeeks. (2026, January 24). Microservices architecture.
+                                GeeksforGeeks.
+                                https://www.geeksforgeeks.org/microservices-architecture/
+                            </li>
+                            <li>
+                                Aumann, J., & Banelis, A. (2023, February 16). Architecture
+                                evolution: From zero to future-proof architecture at home24.
+                                AWS Architecture Blog.
+                                https://aws.amazon.com/blogs/architecture/architecture-evolution-from-zero-to-future-proof-architecture-at-home24/
+                            </li>
+                            <li>
+                                GeeksforGeeks. (2026, June 24). Serverless architectures.
+                                GeeksforGeeks.
+                                https://www.geeksforgeeks.org/system-design/serverless-architectures/
+                            </li>
+                            <li>
+                                Patten, D. (2024, October 6). Serverless architecture: Pros,
+                                cons, and use cases. Medium.
+                                https://medium.com/@dave-patten/serverless-architecture-pros-cons-and-use-cases-4a0769744ca2
+                            </li>
+                            <li>Chainguard. (2025, September 12). Top 7 Docker security risks and best practices.
+                                Chainguard Supply Chain Security 101.
+                                https://www.chainguard.dev/supply-chain-security-101/top-7-docker-security-risks-and-best-practices
+                            </li>
+                            <li>
+                                Port. (n.d.). What is Infrastructure as Code? Benefits & challenges. Port Glossary.
+                                https://www.port.io/glossary/infrastructure-as-code
+                            </li>
+                        </ul>
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>
