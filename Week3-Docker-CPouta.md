@@ -40,22 +40,28 @@ application automatically.
 ```mermaid
 flowchart LR
     subgraph W1["Week 1: VPS"]
+      direction TB
         W1A[Local files] -->|Copy with scp| W1B[C-Pouta VM]
         W1B -->|Manual install| W1C[Web server]
     end
 
     subgraph W2["Week 2: Rahti"]
+      direction TB
         W2A[GitHub source] -->|Webhook / build trigger| W2B[Rahti build]
         W2B --> W2C[OpenShift Pods]
         W2C --> W2D[HTTPS route]
     end
 
     subgraph W3["Week 3: Docker + C-Pouta"]
+      direction TB
         W3A[Source + Dockerfile] -->|docker build| W3B[Docker image]
         W3B -->|docker push| W3C[Docker Hub]
         W3C -->|docker pull| W3D[C-Pouta VM]
         W3D --> W3E[Running container]
     end
+
+    W1 ~~~ W2
+    W2 ~~~ W3
 ```
 
 ## 2. Application Files
