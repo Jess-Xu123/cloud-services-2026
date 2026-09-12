@@ -7,6 +7,102 @@
     <title>Week 3 Assignment</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .row {
+            --bs-gutter-x: 0.9rem;
+        }
+
+        .row>[class*="col-"] {
+            margin-bottom: 0.75rem !important;
+        }
+
+        .card {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.9rem;
+            box-shadow: 0 0.2rem 0.8rem rgba(15, 23, 42, 0.06);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 0.5rem 1.15rem rgba(15, 23, 42, 0.08);
+        }
+
+        .card-body {
+            padding: 1.6rem 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #111827;
+        }
+
+        .card p,
+        .card li,
+        .card code {
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .deploy-card {
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 0.35rem 1rem rgba(15, 23, 42, 0.08);
+        }
+
+        .deploy-card .card-body {
+            padding: 2rem 1.75rem;
+        }
+
+        .deploy-card .card-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .deploy-card h5 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 1.75rem;
+            margin-bottom: 0.85rem;
+            color: #1f2937;
+        }
+
+        .deploy-card p,
+        .deploy-card li,
+        .deploy-card code,
+        .deploy-card pre {
+            font-size: 1.2rem;
+            line-height: 1.7;
+        }
+
+        .deploy-card pre code {
+            font-size: 1.00rem;
+        }
+
+        .deploy-step {
+            margin-bottom: 2rem;
+        }
+
+        .deploy-card .figure {
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .deploy-card pre {
+            margin-top: 0.5rem;
+        }
+
+        .deploy-card .bg-dark,
+        .deploy-card .bg-light {
+            margin-top: 0.75rem;
+        }
+    </style>
+</head>
 
 <body>
 
@@ -24,45 +120,53 @@
                         <p class="card-text">
                             <strong>Answer:</strong>
                         </p>
-                        <p><i>"Containerized applications are applications run in isolated packages of code called
-                                containers." (Google Cloud, n.d.)</i></p>
-                        <p>A container is like a small, independent box. It puts the software code and everything it
-                            needs into one place.
-                            Considering it as a lunch box, it has the food (the application) and all the utensils (the
-                            dependencies) needed to eat it.
-                            You can take this lunch box anywhere.
                         </p>
-                        <p><i>"Microservices is an architecture where an application is divided into small, independent
-                                services that communicate over a network. Each service handles a specific function and
-                                can be
-                                developed and deployed separately." (GeeksforGeeks, 2026)</i></p>
-                        <p>Microservices is like a food market where each vendor specializes in one type of food.
-                            Similarly, each microservice specializes in one specific function.</p>
-                        <p><b>The main difference lies in their focus:</b></p>
-                        <p>Microservices represent an <b>architectural design</b> that
-                            breaks a large application into smaller business functional units, whereas application
-                            containers are a <b>packaging and deployment technology</b>.
-                            In practice, they complement each
-                            other—containers are the ideal lightweight environments used to host, deploy, and scale
-                            individual microservices independently.</p>
-                        <p>In the IT industry, companies like Amazon combine them in practice (Aumann & Banelis, 2023):
+                        <p>Cloud-based email and calendar services refer to messaging, scheduling, and contact
+                            management tools hosted on remote servers managed by third-party cloud providers, rather
+                            than on local physical servers within an organization's building (The HBP Group, 2025;
+                            HostDime, 2025)</p>
+                        <p>Instead of purchasing, setting up, and maintaining hardware and software locally, companies
+                            access these services on-demand over the internet via web browsers, desktop apps, or mobile
+                            applications (The HBP Group, 2025). The cloud vendor takes complete responsibility for
+                            server maintenance, security patches, hardware upgrades, data backups, and
+                            high-availability infrastructure (HostDime, 2025).
                         </p>
-                        <p>
-                            1. Business Splitting (Microservices): Architects divide a complex e-commerce system into
-                            dozens of independent microservices (e.g., user profile, shopping cart, payment). Each
-                            service is built and managed by a small dedicated team.
+                        <p>In daily life, almost every enterprise around us replies on these services. For example,
+                            global banks, university systems, retail giants, and tech companies using Google Workspace
+                            (Gmail and Google Calendar)
+                            or Microsoft 365 (Exchange Online and Outlook Calendar) so their thousands of employees can
+                            book meetings and communicate globally
+                            in real time. </p>
+                        <p>There are noticeable benefits for companies and their customers using cloud-based email and
+                            calendar services:</p>
+                        <p><b>Benefits for companies:</b></p>
+                        <p><b>Cost efficiency:</b>
+                            Companies reduce heavy upfront expenses on physical servers and
+                            storage disks (The HBP Group, 2025). Instead, they transition to a predictable
+                            subscription model - paying only per active user, which avoids the financial strain of
+                            maintaining expensive on-premises hardware (HostDime, 2025; The HBP Group, 2025).
                         </p>
-                        <p>
-                            2. Packaging & Isolation (Containers): Developers use tools like Docker to package each
-                            microservice and its dependencies into a container image. This guarantees that code runs
-                            identically on a developer's local Mac and on cloud production servers like AWS or Google
-                            Cloud.
+                        <p><b>Scalability and Flexibility:</b>
+                            If a company hires 100 new employees tomorrow, admin can provide 100 new cloud email
+                            accounts in minutes (HostDime, 2025; Sim Networks, 2019). If the team downsizes, licenses
+                            can be removed immediately without leaving unused hardware sitting idle (Sim Networks, 2019;
+                            The HBP Group, 2025).
                         </p>
-                        <p>
-                            3. Auto-scaling (Kubernetes): During high-traffic events like Black Friday, container
-                            orchestration tools(Kubernetes) automatically scale up the specific microservice container
-                            (e.g., payment service) from 2 to 200 instances to handle the spike, and scale back down
-                            when traffic normalizes to save costs.
+                        <p><b>Automatic maintenance and Security:</b>Security fixes, spam filtering, data encryption,
+                            and software updates are deployed instantly by cloud providers (HostDime, 2025; Sim
+                            Networks, 2019). Internal IT teams are freed from manual patching and server maintenance,
+                            allowing them to focus on core business projects (HostDime, 2025; Sim Networks, 2019).
+                        </p>
+                        <p><b>Disaster recovery:</b> Cloud providers store redundant backups across geographically
+                            distributed data centers (HostDime, 2025; Sim Networks, 2019). If a local office experiences
+                            a power outage pr hardware failure, business operations can continue without data loss or
+                            email downtime (HostDime, 2025; Sim Networks, 2019).
+                        </p>
+                        <p><b>Benefits for customers:</b></p>
+                        <p><b>Anytime, Anywhere Accessibility:</b>
+                            Customers and clients can communicate without gaps, as employees or students can access
+                            real-time synchronized emails and schedules from any mobile or desktop devices globally
+                            (HostDime, 2025; The HBP Group, 2025).
                         </p>
                     </div>
                 </div>
@@ -75,66 +179,55 @@
                         <p class="card-text fw-bold">Your thoughts about when to maintain your own web server and when
                             to use SaaS/PaaS/IaaS to provide web services?</p>
                         <p class="card-text"><strong>Answer:</strong></p>
+                        <p>Before deciding when to maintain my own web server and when to use these web services
+                            providers, it would be beneficial to understand the definitions and differences among these
+                            web services.
+                        </p>
+                        <p><b>IaaS (Infrastructure as a Service):</b>
+                            It provides raw virtualized computing resources (VMs, storage, networking). Users manage the
+                            OS, runtime, data, and applications, while the provider manages physical hardware (Red
+                            Hat,2026). For example, CSC cPouta is IaaS provider.
+                        </p>
+                        <p>IaaS provides the highest level of control, but also requires the most maintenance.It offers
+                            flexibility and scalability, but requires more technical knowledge and hands-on work (Google
+                            Cloud,2026).</p>
+                        <p><b>PaaS (Platform as a Service)</b>
+                            It offers a cloud environment to build, deploy and manage applications without configuring
+                            underlying servers. The provider manages the hardware, OS, and runtime (Google Cloud,2026).
+                            For example, CSC Rahti.
+                        </p>
+                        <p>PaaS provides a balance between control and maintenance, the user mainly manages their
+                            applications. It makes development easier and faster, but gives the user less control and
+                            customization.</p>
+                        <p><b>SaaS (Software as a Service)</b>
+                            It delivers ready-to-use, fully managed software over the internet via a web browser
+                            (OneAdvanced, 2026).
+                        </p>
+                        <p> SaaS provides the least control but requires almost no maintenance. The provider manages
+                            everything from infrastructure to the software, and the user simply uses the application.
+                            It is easy to set up and use, but offers limited customization and control (Google
+                            Cloud,2026).</p>
+                        <p><b>As a student:</b></p>
                         <p>
-                            <i>
-                                "Serverless architecture is a cloud computing model where the
-                                cloud provider manages the underlying infrastructure,
-                                including servers, storage, and networking. Developers can
-                                focus on writing and deploying application
-                                code."(GeeksforGeeks, 2026)
-                            </i>
+                            I have used both PaaS with CSC Rahti and IaaS with cPouta.
+                            Based on my experience, I think
+                            maintaining my own web server is useful when I need full control over the server and want to
+                            learn how the infrastructure works. However, it also requires more time and technical
+                            knowledge.
                         </p>
                         <p>
-                            Serverless doesn't mean there are no servers literally, it means
-                            that the developers don't need to manage the servers.
+                            For businesses, I think the choice depends on how much control and maintenance is needed.
+                            From my experience working for a tech company, we use Slack as a SaaS
+                            solution. We can simply use it as a communication tool without having to maintain the
+                            software or infrastructure ourselves.
+
                         </p>
                         <p>
-                            Legacy server (traditional server) is like owning a car, no
-                            matter you drive to work or not, you have to pay for the
-                            insurance, maintenance, and other associated costs.
+                            We also use cloud services such as GCP when developing and running our own applications.
+                            This gives us more control over our applications and infrastructure while still reducing
+                            more of the maintenance work compared to managing everything ourselves.
                         </p>
-                        <p>
-                            Serverless architecture is like using a Uber or Bolt, you don't
-                            need to worry about the maintenance. Only when you need to go
-                            somewhere, you pay for the ride. Otherwise, you don't have to
-                            pay anything.
-                        </p>
-                        <p>In IT industry practices:</p>
-                        <p>
-                            1. Event-Driven Execution: Code runs only when triggered by
-                            specific user requests or system events (e.g., uploading an
-                            image or clicking a button).
-                        </p>
-                        <p>
-                            2. Pay-per-Use Billing: Unlike traditional cloud servers that
-                            charge a continuous monthly fee for idle time, serverless
-                            charges strictly for the exact millisecond duration that the
-                            code executes.
-                        </p>
-                        <p>
-                            3. Automatic Scaling and Zero Operations: The cloud system
-                            instantly scales from zero to thousands of concurrent executions
-                            during high-traffic spikes without requiring manual
-                            infrastructure setup or operating system maintenance.
-                        </p>
-                        <p>
-                            However, serverless also has some limitations (Patten, 2024):
-                        </p>
-                        <ul>
-                            <li>
-                                Higher costs at large scale: for high-volume workloads, the
-                                pay-per-use model can become significantly more expensive than
-                                running dedicated servers or containerized applications (Dave
-                                Patten, 2024). Imagine it is cheap when you occasionally use
-                                Uber/Bolt to go somewhere. But if you have a delivery company,
-                                the bill will be much bigger.
-                            </li>
-                            <li>
-                                Cold starts & performance latency: If a function hasn't been
-                                used for a while, the cloud provider needs time to wake it up,
-                                which can cause delays for end-users.
-                            </li>
-                        </ul>
+
                     </div>
                 </div>
             </div>
@@ -146,28 +239,52 @@
                         <p class="card-text fw-bold">Compare few cloud data storage provider features and pricing
                             (either for home users or for enterprises)</p>
                         <p class="card-text"><strong>Answer:</strong></p>
-                        <p>Using third-party containers introduces critical software and
-                            infrastructure security risks if they are not verified or configured properly.
-                            According to Chainguard (2025), key security risks include:
+                        <p>I will compare cloud data storage providers for home users with Google Drive, Microsoft
+                            OneDrive, and pCloud as examples.
                         </p>
                         <p>
-                            <b>1. Known Vulnerabilities in the Base Image:</b>
-                            Third-party container images downloaded from public repositories often contain outdated
-                            system packages or unpatched software libraries with known common vulnerabilities and
-                            exposures. Attackers can easily use the flaws to break into the application.
+                            <b>Google Drive</b>
                         </p>
-                        <p><b>2. Hidden Malicious Code:</b>
-                            unsafe containers can carry hidden bad scripts, such as bitcoin miners that steal your
-                            computer's power, or backdoors that give attackers full remote control.
+                        <p>
+                            Google drive is best for mobile android integration, Google Workspace users, and
+                            collaborative files editing. It offers seamless background sync on Android, effortless
+                            real-time collaboration via Docs/Sheets/Slides, and cloud photo/video management (Martin,M.
+                            2026)
                         </p>
-                        <p><b>3. Leaked Passwords and Dangerous Configurations:</b>
-                            Container creators often accidentally leave secret keys or passwords inside the container
-                            files. Also, sharing sensitive host folder access with a container gives attackers a direct
-                            key to control the background Docker system.
+                        <p>
+                            <li>
+                                Pricing for Google Drive: Free storage 15GB, and €1.99/month for 100GB for
+                                basic plan. The standard plan is €10/month with 2TB storage (Brown,S. 2025).
+                            </li>
                         </p>
-                        <p><b>4. Too Much Authority (Container Escape):</b>
-                            If a container is given high administrative access (like the --privileged flag), an attacker
-                            inside the container can break out of its sandbox and control your entire computer system.
+
+
+                        <p><b>Microsoft OneDrive</b> </p>
+                        <p>
+                            Microsoft OneDrive is good for Windows PC users and households needing office productivity
+                            software. It provides deep integration with Windows File Explorer and complete desktop
+                            versions of Word, Excel, and PowerPoint (Martin,M.
+                            2026).
+                        </p>
+                        <p>
+                            <li>Pricing for OneDrive:
+                                Free storage 5GB, and €2/month for 100GB basic storage. The standard personal plan is
+                                €10/month for 1TB including full Microsoft 365 desktop apps.</li>
+
+                        </p>
+                        <p><b>pCloud:</b></p>
+                        <p>
+                            pCloud is best for long-term value, media streaming, and avoiding monthly subscriptions. It
+                            has built-in audio/video streaming tools and virtual drive technologies that saves local
+                            hard drive space (Capell, J. 2026).
+                        </p>
+                        <p>
+                            <li>
+                                Pricing for pCloud:
+                                Free storage 10GB, and the annual subscriptions is €5/month for 500GB or €10/month for
+                                2TB (Martin,M. 2026). It offers lifetime plans, one-time payment is about €199 for 500GB
+                                or €399 for 2TB.
+                            </li>
                         </p>
                     </div>
                 </div>
@@ -182,84 +299,82 @@
                             resolvers?
                         </p>
                         <p class="card-text"><strong>Answer:</strong></p>
-                        <p><i>"Infrastructure as Code (IaC) is a practice of transforming infrastructure blueprints into
-                                executable code." (Port, n.d.)</i> Instead of manually setting up cloud resources
-                            through a graphical user interface, infrastructure can be managed using code files, acting
-                            like a master blueprint that automates setup.</p>
-                        <p> Key benefits of IaC for modern software development include:</p>
-                        <p><b> 1. Speed and Automation:</b> Development teams can automatically provision and destroy
-                            complete infrastructure in minutes rather than days by running automation scripts.</p>
-                        <p><b> 2. Consistency and Reduce Human Error:</b> By removing manual configuration steps, IaC
-                            guarantees that environments are created identically, eliminating configuration drift and
-                            human mistakes.</p>
-                        <p><b> 3. Version Control and Traceability:</b> Since infrastructure is written as code, it can
-                            be tracked, audited, and reviewed using version control tools like Git, enabling instant
-                            rollbacks if a failure occurs.</p>
-                        <p><b> 4. Cost Efficiency and Optimization:</b> Cloud resources can be dynamically created only
-                            when needed and destroyed immediately when idle (such as shutting down test environments
-                            overnight), significantly reducing operational costs.</p>
-                        <p><b>Company Example:</b></p>
-                        <p> Company like Netflix heavily rely on IaC tools (e.g., Terraform) to automatically manage,
-                            scale, and deploy thousands of servers globally on AWS to serve millions of streaming users
-                            without manual intervention.</p>
+                        <p>Many IoT devices use public DNS resolvers such as Google's 8.8.8.8 because they are fast,
+                            reliable, and available worldwide (CaptionDNS, 2025). DNS is needed to translate domain
+                            names into IP address, allowing IoT devices to communicate with their cloud services
+                            (CaptionDNS, 2025).</p>
+                        <p> Another reason is that public DNS can provide an alternative to local or ISP DNS server. If
+                            an ISP's DNS is slow or unavailable, a public resolver such as 8.8.8.8 can still be used.
+                            Public DNS services are also free and can save device manufactures from having to operate
+                            their own DNS infrastructure (CaptionDNS, 2025).</p>
+                        <p>Privacy is another consideration when choosing a DNS provider. DNS queries can reveal which
+                            domains a device is communicating with. Cloudflare introduced 1.1.1.1 as a privacy-focused
+                            DNS service and emphasized limiting the use and retention of user data (Prince, M. 2018).
+                        </p>
+                        <p>Therefore, IoT manufacturers may choose public DNS resolvers because of their reliability,
+                            performance, availability, and ease of use, while privacy and security can also influence
+                            which DNS provider they choose.</p>
+
                     </div>
                 </div>
             </div>
             <div class="col-md-12 mb-4">
                 <div class="card h-100">
-                    <div class="card-body">
-                        <h4 class="card-title">Reference:</h4>
-                        <p>
-                        <ul>
-                            <li>
-                                Google Cloud. (n.d.). What are containers? Google Cloud.
-                                https://cloud.google.com/containers
+                    <div class="card-body py-3 px-4">
+                        <h4 class="card-title mb-2">Reference:</h4>
+                        <ul class="mb-0 ps-3">
+                            <li class="mb-1">The HBP Group. (2025, May 20). Cloud computing & why it's so popular.
+                                https://thehbpgroup.co.uk/blog/why-is-cloud-computing-so-popular</li>
+                            <li class="mb-1">HostDime. (2025, August 29). What is cloud email and why it's ideal for
+                                small
+                                businesses. HostDime Blog.
+                                https://blog.hostdime.in/cloud-email-solutions/what-is-cloud-email-and-why-it-is-ideal-for-small-businesses/
                             </li>
-                            <li>
-                                GeeksforGeeks. (2026, January 24). Microservices architecture.
-                                GeeksforGeeks.
-                                https://www.geeksforgeeks.org/microservices-architecture/
+                            <li class="mb-1">Sim Networks. (2019, May 10). 8 reasons to move your customer email
+                                platform to the
+                                cloud. Atmail Blog. https://www.atmail.com/blog/move-email-to-cloud/
                             </li>
-                            <li>
-                                Aumann, J., & Banelis, A. (2023, February 16). Architecture
-                                evolution: From zero to future-proof architecture at home24.
-                                AWS Architecture Blog.
-                                https://aws.amazon.com/blogs/architecture/architecture-evolution-from-zero-to-future-proof-architecture-at-home24/
+                            <li class="mb-1">Red Hat. (2026, February 9). IaaS vs. PaaS vs. SaaS. Red Hat Topics in
+                                Cloud Computing.
+                                https://www.redhat.com/en/topics/cloud-computing/iaas-vs-paas-vs-saas</li>
+                            <li class="mb-1">Google Cloud. (2026). PaaS vs IaaS vs SaaS: What's the difference? Google
+                                Learn.
+                                https://cloud.google.com/learn/paas-vs-iaas-vs-saas
                             </li>
-                            <li>
-                                GeeksforGeeks. (2026, June 24). Serverless architectures.
-                                GeeksforGeeks.
-                                https://www.geeksforgeeks.org/system-design/serverless-architectures/
+                            <li class="mb-1">OneAdvanced PR Press Team. (2026, August 25). SaaS vs PaaS vs IaaS: What's
+                                the
+                                difference? Advanced.
+                                https://www.oneadvanced.com/resources/saas-vs-paas-vs-iaas-whats-the-difference/
                             </li>
-                            <li>
-                                Patten, D. (2024, October 6). Serverless architecture: Pros,
-                                cons, and use cases. Medium.
-                                https://medium.com/@dave-patten/serverless-architecture-pros-cons-and-use-cases-4a0769744ca2
+                            <li class="mb-1">Martin, M. (2026, June 18). The best cloud storage apps. Zapier.
+                                https://zapier.com/blog/best-cloud-storage-apps/</li>
+                            <li class="mb-1">Capell, J. (2026, August 13). Best cloud storage of 2026: Tested, reviewed
+                                and rated by
+                                experts. TechRadar. https://www.techradar.com/best/best-cloud-storage
                             </li>
-                            <li>Chainguard. (2025, September 12). Top 7 Docker security risks and best practices.
-                                Chainguard Supply Chain Security 101.
-                                https://www.chainguard.dev/supply-chain-security-101/top-7-docker-security-risks-and-best-practices
+                            <li class="mb-1">CaptainDNS. (2025, December 8). Google DNS 8.8.8.8: How it works, benefits
+                                and alternatives. https://www.captaindns.com/en/blog/dns-8888-google
                             </li>
-                            <li>
-                                Port. (n.d.). What is Infrastructure as Code? Benefits & challenges. Port Glossary.
-                                https://www.port.io/glossary/infrastructure-as-code
+                            <li class="mb-1">Prince, M. (2018, April 1). Announcing 1.1.1.1: The fastest, privacy-first
+                                consumer DNS service. Cloudflare. https://blog.cloudflare.com/announcing-1111/
                             </li>
-                        </ul>
 
-                        </p>
+                        </ul>
                     </div>
                 </div>
             </div>
 
 
             <!-- Deployment Steps Section -->
-            <div class="card my-4">
+            <div class="card my-4 deploy-card">
                 <div class="card-body">
                     <h4 class="card-title">Deployment Steps</h4>
                     <p class="card-text">Below are the procedures and screenshots documenting the
                         deployment process of this application on Rahti using Allas storage.</p>
+                    <p class="card-text">Final assignment url:
+                        https://cloud-services-2026-week3-assignment.2.rahtiapp.fi/</p>
 
-                    <div class="mb-4">
+                    <div class="deploy-step">
                         <h5>Preconditions</h5>
                         <ol>
                             <li>Add Allas Storage Service on CSC</li>
@@ -278,61 +393,111 @@
                                 </figcaption>
                             </figure>
 
+                            <li>Create a new project in Rahti</li>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week-3-media/week-3-assignment/4.png"
+                                    class="figure-img img-fluid img-thumbnail" alt="Create a bucket in Allas">
+                                <figcaption class="figure-caption">Figure 3: Create a new project in Rahti.
+                                </figcaption>
+                            </figure>
+
                         </ol>
                     </div>
 
                     <hr class="my-4">
 
-
                     <!-- Step 1 -->
-                    <div class="mb-4">
-                        <h5>Step 1: Add Allas Storage Service on CSC</h5>
-                        <p>Created a Dockerfile to package the web application with all required dependencies into
-                            an
-                            isolated container image.</p>
+                    <div class="deploy-step">
+                        <h5>Step 1: Push week-3-assignment to Git Repository</h5>
+                        <p>The folder includes Dockerfile and index.html.</p>
                         <figure class="figure">
-                            <!-- 把 src 替换为你的图片路径 -->
-                            <img src="https://a3s.fi/swift/v1/week-3-media/week-3-assignment/1.png"
-                                class="figure-img img-fluid img-thumbnail" alt="Add Allas Storage Service on CSC">
-                            <figcaption class="figure-caption">Figure 1: Add Allas Storage Service on CSC.
+                            <img src="https://a3s.fi/swift/v1/week-3-media/week-3-assignment/3.png"
+                                class="figure-img img-fluid img-thumbnail"
+                                alt="Push week-3-assignment to Git Repository">
+                            <figcaption class="figure-caption">Figure 4: Push week-3-assignment to Git Repository.
                             </figcaption>
                         </figure>
                     </div>
 
                     <!-- Step 2 -->
-                    <div class="mb-4">
-                        <h5>Step 2: Pushing Image to Container Registry</h5>
-                        <p>Uploaded the built Docker image to the registry (e.g., Docker Hub / Quay.io) so that the
-                            Rahti platform can pull it.</p>
-                        <figure class="figure">
-                            <img src="https://a3s.fi/swift/v1/week-3-media/week-3-assignment/2.png"
-                                class="figure-img img-fluid img-thumbnail" alt="Pushing image to registry">
-                            <figcaption class="figure-caption">Figure 2: Image successfully pushed to the container
-                                registry.</figcaption>
-                        </figure>
+                    <div class="deploy-step">
+                        <h5>Step 2: Check local environment setup (macOS)</h5>
+                        <p>OpenShift CLI was installed during Week 2 assignment, so this step is to verify the version
+                            of the CLI.</p>
+                        <div class="bg-dark text-light p-3 rounded mb-3">
+                            <pre class="m-0 text-light"><code># Check OpenShift CLI version
+oc version
+</code></pre>
+                        </div>
                     </div>
 
                     <!-- Step 3 -->
-                    <div class="mb-4">
-                        <h5>Step 3: Deploying and Exposing Application on Rahti 2</h5>
-                        <p>Configured the application deployment, created a Kubernetes Service, and set up a Route
-                            in
-                            CSC Rahti 2 to expose the website to the internet.</p>
-                        <figure class="figure">
-                            <img src="path/to/step3-screenshot.png" class="figure-img img-fluid img-thumbnail"
-                                alt="Rahti 2 deployment console">
-                            <figcaption class="figure-caption">Figure 3: Active deployment status and generated
-                                public
-                                route in Rahti 2 console.</figcaption>
-                        </figure>
+                    <div class="deploy-step">
+                        <h5>Step 3: Authentication and Project Selection</h5>
+                        <p>Authenticated into CSC Rahti using the web console token and verified project context:</p>
+                        <div class="bg-dark text-light p-3 rounded mb-3">
+                            <pre class="m-0 text-light"><code># Log in using web-generated token
+oc login https://api.2.rahti.csc.fi:6443 --token=&lt;TOKEN&gt;
+
+# Set active project
+oc project week3-assignment</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="deploy-step">
+                        <h5>Step 4: Build, Deploy, and Route Configuration</h5>
+                        <p>Triggered an automated build pointing directly to the Week 3 subdirectory using
+                            <code>--context-dir</code>, then created an Edge TLS route:
+                        </p>
+                        <div class="bg-dark text-light p-3 rounded mb-3">
+                            <pre class="m-0 text-light"><code># Build and deploy application from sub-directory
+oc new-app https://github.com/Jess-Xu123/cloud-services-2026.git --context-dir="week-3-assignment"
+
+# Monitor build logs
+oc logs -f bc/cloud-services-2026
+
+# Create Edge TLS Route with automatic HTTP -&gt; HTTPS redirect
+oc create route edge cloud-services-2026 --service=cloud-services-2026 --insecure-policy=Redirect
+
+# Inspect route details
+oc get route</code></pre>
+                        </div>
+                        <div>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week-3-media/week-3-assignment/5.png"
+                                    class="figure-img img-fluid img-thumbnail" alt="build and deploy">
+                                <figcaption class="figure-caption">Figure 5: Build and deploy
+                                </figcaption>
+                            </figure>
+
+                        </div>
+
+
+                        <!-- Step 5 -->
+                        <div class="deploy-step">
+                            <h5>Step 4: Terminal Output Display</h5>
+                            <!-- Terminal Output Display -->
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week-3-media/week-3-assignment/6.png"
+                                    class="figure-img img-fluid img-thumbnail" alt="Terminal output display">
+                                <figcaption class="figure-caption">Figure 6: Terminal Output Display
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <!-- Step 6 -->
+                        <div class="deploy-step">
+                            <h5>URL:
+                                https://cloud-services-2026-week3-assignment.2.rahtiapp.fi/</h5>
+                        </div>
+
                     </div>
                 </div>
             </div>
-        </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+                crossorigin="anonymous"></script>
 </body>
 
 </html>
