@@ -452,16 +452,18 @@ oc project week3-assignment</code></pre>
                         </p>
                         <div class="bg-dark text-light p-3 rounded mb-3">
                             <pre class="m-0 text-light"><code># Build and deploy application from sub-directory
-oc new-app https://github.com/Jess-Xu123/cloud-services-2026.git --context-dir="week-3-assignment"
+oc new-app https://github.com/Jess-Xu123/cloud-services-2026.git \
+  --context-dir="week-3-assignment" \
+  --name=week3-web
 
 # Monitor build logs
-oc logs -f bc/cloud-services-2026
+oc logs -f buildconfig/week3-web
 
 # Create Edge TLS Route with automatic HTTP -&gt; HTTPS redirect
-oc create route edge cloud-services-2026 --service=cloud-services-2026 --insecure-policy=Redirect
+oc create route edge week3-web --service=week3-web --insecure-policy=Redirect
 
 # Inspect route details
-oc get route</code></pre>
+oc get route week3-web</code></pre>
                         </div>
                         <div>
                             <figure class="figure">
