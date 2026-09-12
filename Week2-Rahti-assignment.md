@@ -215,39 +215,42 @@ oc get pods
 
 The deleted Pod entered the `Terminating` state, and OpenShift automatically provisioned a replacement Pod (`cloud-services-2026-77cd8d747c-gwjbj`) within four seconds.
 
-## Troubleshooting & Updating `index.html`
+## Troubleshooting & Best Practices
 
-### 1. Issue Encountered
+### 1. Issues Encountered and Root Cause Analysis
 
-After updating `index.html` in the `Week2` directory and pushing the changes to the `main` branch on GitHub, the updated website did not automatically deploy to Rahti (`https://cloud-services-2026-week2-assignment.2.rahtiapp.fi/`), despite having configured the GitHub Webhook properly.
+During the deployment and updating processes in Weeks 2 and 3, two major
+technical issues were encountered.
 
----
+#### Issue A: GitHub Push Did Not Trigger Automatic Deployment (Week 2)
 
-## 2. Root Cause Analysis
+**Symptom:** After updating `index.html` in the Week 2 directory and pushing the
+changes to the `main` branch, the live site did not update automatically, even
+though the GitHub Webhook had been configured.
 
-By inspecting the `BuildConfig` YAML configuration in Rahti, the
-`spec.source.git` block was set as follows:
+**Root cause:** The Rahti `BuildConfig` did not explicitly specify a Git branch.
+Without a `ref` value, the build configuration monitored `master`. GitHub sent
+the webhook event for `refs/heads/main`, but Rahti ignored it because the event
+did not match the branch configured in the `BuildConfig`.
 
-```yaml
-source:
-  type: Git
-  git:
-    uri: https://github.com/Jess-Xu123/cloud-services-2026.git
-  contextDir: Week 2
-```
+#### Issue B: Week 3 Resource Naming and Webhook Confusion
 
-**Branch mismatch:** OpenShift/Rahti defaults to monitoring the `master` branch
-when no explicit `ref` field is specified under `git`.
+**Symptom:** Updating `index.html` in the `week-3-assignment` directory did not
+refresh the Week 3 site, and creating the route produced resource name conflict
+errors.
 
-**Event drop:** When code was pushed to GitHub's default `main` branch, GitHub
-successfully sent a webhook payload for `refs/heads/main`, but Rahti ignored the
-request because it was configured to listen for changes on `master`.
+**Root cause:** The Week 3 application was initially created without an
+explicit `--name` value, so OpenShift derived the application name from the
+repository name, `cloud-services-2026`. This made it difficult to distinguish
+the Week 3 resources from the Week 2 resources and could conflict with existing
+resources in the same project. In addition, Week 3 needed its own BuildConfig
+with the correct context directory and a dedicated GitHub Webhook.
 
-## 3. Solution and Steps Taken
+### 2. Solutions and Steps Taken
 
-### Step 1: Update the BuildConfig in Rahti
+#### Step 1: Fix the Week 2 Branch Configuration
 
-Added `ref: main` under `spec.source.git` in the BuildConfig YAML file:
+The Week 2 `BuildConfig` was updated with an explicit `ref: main` value:
 
 ```yaml
 source:
@@ -258,20 +261,75 @@ source:
   contextDir: Week 2
 ```
 
-### Step 2: Update `index.html`
+After updating `Week 2/index.html`, the changes were committed and pushed to
+the `main` branch.
 
-Modified `Week 2/index.html` to reflect the updated content, then committed
-and pushed the changes to the `main` branch.
+#### Step 2: Use Explicit Names for the Week 3 Resources
 
-### Step 3: Verification
+The Week 3 application was redeployed in its own Rahti project with an explicit
+application name and the correct context directory:
 
-- **GitHub Webhooks:** Checked **Settings -> Webhooks -> Recent Deliveries** in
-  GitHub and confirmed HTTP 200/201 responses after the push.
-- **Rahti Builds:** Verified that a new build, such as build `#6`, was
-  automatically triggered under **Builds -> Builds** in the Rahti Web Console.
-- **Site Verification:** Refreshed the live endpoint and verified that the
-  updated content rendered correctly:
-  <https://cloud-services-2026-week2-assignment.2.rahtiapp.fi/>.
+```bash
+oc project week3-assignment
+oc new-app https://github.com/Jess-Xu123/cloud-services-2026.git \
+  --context-dir="week-3-assignment" \
+  --name=week3-web
+
+oc create route edge week3-web \
+  --service=week3-web \
+  --insecure-policy=Redirect
+```
+
+The unique Webhook payload URL was retrieved with the following command and
+added as a separate Webhook under **GitHub Settings -> Webhooks**:
+
+```bash
+oc describe bc week3-web
+```
+
+#### Step 3: Verify the Deployments
+
+- **GitHub Webhooks:** Checked **Settings -> Webhooks -> Recent Deliveries**
+  and confirmed successful responses after pushing changes.
+- **Rahti builds:** Checked **Builds -> Builds** in the Rahti Console and
+  confirmed that builds were triggered for the correct project and directory.
+- **Live endpoints:** Refreshed both sites and confirmed that the updated
+  content was displayed:
+  - Week 2: <https://cloud-services-2026-week2-assignment.2.rahtiapp.fi/>
+  - Week 3: <https://week3-web-week3-assignment.2.rahtiapp.fi/>
+
+### 3. Key Takeaways and Best Practices
+
+#### Architecture and Storage Isolation
+
+- **PaaS and S3 separation:** Application logic and HTML/CSS run in Docker
+  containers hosted on CSC Rahti. Large media files and static assets are
+  stored in CSC Allas (S3) and referenced by absolute HTTP URLs, such as in an
+  `<img src="...">` attribute, instead of being included in the container
+  image.
+- **Project and namespace isolation:** Host each weekly assignment in its own
+  Rahti project, such as `week2-assignment` and `week3-assignment`, to isolate
+  runtime resources, BuildConfigs, services, and routes.
+
+#### Git Repository Management
+
+- **Clean directory structure:** Keep each week's source files in a dedicated
+  subdirectory, such as `week-1/`, `Week 2/`, and `week-3-assignment/`, so that
+  similarly named files such as `index.html` do not get mixed up.
+- **Credential protection:** Never commit tokens, Webhook secrets, or other
+  private credentials to a public Git repository.
+- **Ignore operating-system files:** Add `.DS_Store` to `.gitignore` and remove
+  already tracked copies with `git rm --cached` when necessary.
+
+#### Rahti CI/CD Configuration
+
+- **Explicit resource naming:** Always provide `--name` when running
+  `oc new-app`, for example `--name=week3-web`, so that applications and their
+  related resources are easy to identify.
+- **Explicit branch configuration:** Set `ref: main` in every `BuildConfig`
+  that builds from the repository's `main` branch.
+- **Dedicated Webhooks:** Configure a separate Webhook for each BuildConfig and
+  ensure that its context directory matches the assignment being deployed.
 
 ## Q&A
 
