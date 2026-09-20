@@ -18,28 +18,13 @@ Rahti Services and are not exposed through public Routes.
 
 ## Architecture
 
-### Week 4 Application Architecture
-
-```mermaid
-flowchart LR
-		User[Browser] -->|HTTPS| Route[Rahti public Route]
-		Route --> FrontendSvc[frontend Service]
-		FrontendSvc --> FrontendPod[Frontend Pod<br/>Nginx]
-		FrontendPod -->|Static HTML| User
-		FrontendPod -->|/api through internal DNS| BackendSvc[backend Service]
-		BackendSvc --> BackendPod[Backend Pod<br/>Flask + Gunicorn]
-		BackendPod -->|MySQL protocol| MySQLSvc[mysql Service]
-		MySQLSvc --> MySQLPod[MySQL Pod]
-		MySQLPod --> PVC[(PersistentVolumeClaim)]
-```
-
 ### What Is Public and What Is Private?
 
-| Component | Public access                | Internal access       | Purpose                              |
-| :-------- | :--------------------------- | :-------------------- | :----------------------------------- |
-| Frontend  | Yes, through the HTTPS Route | Yes                   | Serves HTML and proxies API requests |
-| Backend   | No public Route              | `http://backend:8000` | Runs the REST API                    |
-| MySQL     | No public Route or host port | `mysql:3306`          | Stores application data              |
+| Component | Public access                | Internal access               | Purpose                              |
+| :-------- | :--------------------------- | :---------------------------- | :----------------------------------- |
+| Frontend  | Yes, through the HTTPS Route | Yes                           | Serves HTML and proxies API requests |
+| Backend   | No public Route              | `http://backend-service:8000` | Runs the REST API                    |
+| MySQL     | No public Route or host port | `db:3306`                     | Stores application data              |
 
 The browser never connects directly to either the backend or MySQL. This keeps
 the internal application layers off the public Internet and ensures that the
@@ -141,8 +126,8 @@ The backend can reach MySQL through the Service name `mysql`, and the frontend
 can reach the backend through `backend`:
 
 ```text
-frontend -> http://backend:8000/api
-backend  -> mysql:3306
+frontend -> http://backend-service:8000/api/todos
+backend  -> db:3306
 ```
 
 These names are resolved by the internal cluster DNS. No Pod IP address should
@@ -210,20 +195,21 @@ flowchart LR
 
 ### 1. Build and Push the Images
 
-Run these commands from the project directory containing the `frontend` and
+Run these commands from the `week-4` directory containing the `frontend` and
 `backend` directories. The Docker Hub username must match the account used by
-`docker login`.
+`docker login`. Because the local computer uses Apple Silicon and Rahti requires
+Linux AMD64 images, always include `--platform linux/amd64`.
 
 ```bash
 docker login
 
-docker build -f backend/Dockerfile \
-	-t username/lempbackend:1.0.0 .
-docker push username/lempbackend:1.0.0
+docker build --platform linux/amd64 -f backend/Dockerfile \
+	-t username/lempbackend:1.0.1 .
+docker push username/lempbackend:1.0.1
 
-docker build -f frontend/Dockerfile \
-	-t username/lempfrontend:1.0.0 .
-docker push username/lempfrontend:1.0.0
+docker build --platform linux/amd64 -f frontend/Dockerfile \
+	-t username/lempfrontend:1.0.3 .
+docker push username/lempfrontend:1.0.3
 ```
 
 The image name must use the authenticated Docker Hub account. For example,
@@ -274,17 +260,22 @@ should expose port `3306` only inside the Rahti project.
 ```bash
 oc apply -f rahti/backend-deployment.yaml
 oc apply -f rahti/backend-service.yaml
-oc rollout status deployment/backend
+oc rollout status deployment/backend-deployment --timeout=120s
 ```
 
 The backend Deployment should:
 
-- use `username/lempbackend:1.0.0` or the final image tag;
+- use the image tag specified in `rahti/backend-deployment.yaml`;
 - listen on container port `8000`;
-- set `DB_HOST=mysql`;
+- set `DB_HOST=db`;
 - read the database name and password from configuration resources;
 - depend on the MySQL Service through internal DNS;
 - have no public Route.
+
+The Flask application creates `appdb.todos` with `CREATE TABLE IF NOT EXISTS`
+before handling an API request. This is needed because the Rahti MySQL
+Deployment uses a PVC and does not automatically mount the local
+`db/init/init.sql` file.
 
 ### 6. Deploy the Frontend
 
@@ -294,15 +285,20 @@ oc apply -f rahti/frontend-service.yaml
 ```
 
 The frontend image contains the Nginx configuration. Its `/api` location must
-proxy to the backend Service, for example:
+proxy to the `backend-service` Service. Nginx listens on non-privileged port
+`8080` because Rahti runs containers as non-root users:
 
 ```nginx
+server {
+	listen 8080;
+
 location /api {
-		proxy_pass http://backend:8000;
+		proxy_pass http://backend-service:8000;
 		proxy_set_header Host $host;
 		proxy_set_header X-Real-IP $remote_addr;
 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 		proxy_set_header X-Forwarded-Proto $scheme;
+}
 }
 ```
 
@@ -313,8 +309,9 @@ cluster address.
 ### 7. Create the Public Route
 
 ```bash
-oc expose service frontend
-oc get route frontend
+oc apply -f rahti/frontend-deployment.yaml
+oc apply -f rahti/frontend-service.yaml
+oc get route
 ```
 
 The resulting hostname is the public application address. Only the frontend
@@ -329,10 +326,86 @@ oc get pods
 oc get services
 oc get route
 
-oc logs deployment/frontend --tail=100
-oc logs deployment/backend --tail=100
-oc logs deployment/mysql --tail=100
+oc logs deployment/frontend-deployment --tail=100
+oc logs deployment/backend-deployment --tail=100
+oc logs deployment/db --tail=100
 ```
+
+The application API is available through the frontend Route. The Todo list
+uses `GET /api/todos` and `POST /api/todos`:
+
+```bash
+ROUTE=$(oc get route frontend -o jsonpath='{.spec.host}')
+curl -i "https://${ROUTE}/api/health"
+curl -i "https://${ROUTE}/api/todos"
+curl -i -X POST "https://${ROUTE}/api/todos" \
+	-H 'Content-Type: application/json' \
+	-d '{"task":"End-to-end test"}'
+curl -i "https://${ROUTE}/api/todos"
+```
+
+After the POST request, verify persistence directly in MySQL:
+
+```bash
+oc exec -it deployment/db -- mysql -uappuser -p appdb
+```
+
+```sql
+SHOW TABLES;
+SELECT * FROM todos ORDER BY id DESC;
+```
+
+### 9. Update the Public Website After Editing `index.html`
+
+Editing the local `frontend/index.html` does not change the public website.
+The file is copied into the Docker image during the build, so a new image tag
+must be built, pushed, and referenced by the frontend Deployment. Run the
+following from the `week-4` directory:
+
+```bash
+VERSION=1.0.4
+
+docker build --no-cache --platform linux/amd64 \
+	-t jessxu123/lempfrontend:${VERSION} \
+	-f frontend/Dockerfile .
+docker push jessxu123/lempfrontend:${VERSION}
+
+# Update the image directly in the active Deployment.
+oc set image deployment/frontend-deployment \
+	frontend=jessxu123/lempfrontend:${VERSION}
+oc rollout status deployment/frontend-deployment --timeout=120s
+```
+
+Alternatively, update the `image:` value in
+`rahti/frontend-deployment.yaml`, then apply it:
+
+```bash
+oc apply -f rahti/frontend-deployment.yaml
+oc rollout status deployment/frontend-deployment --timeout=120s
+```
+
+Use a new version tag for every frontend change. Reusing `1.0.0` or relying
+only on `latest` can leave the cluster running an older image digest. Confirm
+that the new HTML is live with:
+
+```bash
+curl -fsSL "https://${ROUTE}/" | grep -o "/api/todos"
+```
+
+If the browser still shows old JavaScript, perform a hard refresh with
+`Cmd+Shift+R`.
+
+For local static-page testing, do not open the file with `file://`. Browsers
+treat local files as a unique `null` origin and block `fetch('/api/todos')`.
+Start a local HTTP server instead:
+
+```bash
+cd frontend
+python3 -m http.server 8081
+```
+
+Then open `http://localhost:8081`. This serves the HTML, but it does not proxy
+API requests; complete frontend-backend testing should use the Rahti Route.
 
 Open the frontend Route in a browser. Confirm that:
 
@@ -383,27 +456,71 @@ configuration.
 Check the Nginx proxy target and Service name:
 
 ```bash
-oc get service backend
-oc get endpoints backend
-oc logs deployment/frontend
-oc logs deployment/backend
+oc get service backend-service
+oc get endpoints backend-service
+oc logs deployment/frontend-deployment
+oc logs deployment/backend-deployment
 ```
 
-The proxy target should use the internal Service name, such as
-`http://backend:8000`, not `localhost` and not a Pod IP.
+The proxy target should use `http://backend-service:8000`, not `localhost` and
+not a Pod IP. The public browser request should be `/api/todos`, not `/api`.
 
 ### The backend cannot connect to MySQL
 
 ```bash
-oc get service mysql
+oc get service db
 oc get pods
-oc logs deployment/mysql
-oc logs deployment/backend
+oc logs deployment/db
+oc logs deployment/backend-deployment
 ```
 
-Check that `DB_HOST` is `mysql`, the database credentials match, and MySQL is
+Check that `DB_HOST` is `db`, the database credentials match, and MySQL is
 ready before testing the API. A Service can exist while its Endpoints are empty
 if the MySQL Pod is not ready.
+
+### The API returns 404 for `/api`
+
+The backend does not define a generic `/api` endpoint. Use the implemented
+endpoints instead:
+
+```bash
+curl "https://${ROUTE}/api/health"
+curl "https://${ROUTE}/api/todos"
+```
+
+If the browser reports `document.getElementById('msg')` as `null`, the browser
+is running an old frontend image. Build and deploy a new version as described
+in the website update section above.
+
+### The rollout is stuck at 0 updated replicas
+
+Inspect the ReplicaSet events:
+
+```bash
+oc get pods,rs
+oc describe rs <new-replicaset-name>
+oc get events --sort-by=.lastTimestamp
+```
+
+Rahti may reject the new Pod when the project CPU quota is full. A rolling
+update temporarily needs both the old and new Pod. In this assignment the
+Deployments can use:
+
+```yaml
+strategy:
+	type: Recreate
+```
+
+`Recreate` removes the old Pod before creating the new one, so it works within
+the quota but causes a short interruption during updates.
+
+### Nginx fails with a permission error
+
+OpenShift runs the container as a non-root user. Nginx must not write its PID
+or temporary files under protected system directories, and it must not listen
+on port 80. The working configuration uses `/tmp` for runtime paths and port
+`8080` for the container. The frontend Service may still expose port `80` and
+forward it to `targetPort: 8080`.
 
 ### MySQL data disappears
 
@@ -430,9 +547,9 @@ from pulling the image.
 ### The public Route does not work
 
 ```bash
-oc get route frontend
-oc get service frontend
-oc get endpoints frontend
+oc get route
+oc get service frontend-service
+oc get endpoints frontend-service
 ```
 
 The Route must point to the frontend Service, and the Service selector must

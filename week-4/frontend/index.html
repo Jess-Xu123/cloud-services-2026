@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 4 Assignment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .row {
+            --bs-gutter-x: 0.9rem;
+        }
+
+        .row>[class*="col-"] {
+            margin-bottom: 0.75rem !important;
+        }
+
+        .card {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.9rem;
+            box-shadow: 0 0.2rem 0.8rem rgba(15, 23, 42, 0.06);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 0.5rem 1.15rem rgba(15, 23, 42, 0.08);
+        }
+
+        .card-body {
+            padding: 1.6rem 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #111827;
+        }
+
+        .card p,
+        .card li,
+        .card code {
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .deploy-card {
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 0.35rem 1rem rgba(15, 23, 42, 0.08);
+        }
+
+        .deploy-card .card-body {
+            padding: 2rem 1.75rem;
+        }
+
+        .deploy-card .card-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .deploy-card h5 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 1.75rem;
+            margin-bottom: 0.85rem;
+            color: #1f2937;
+        }
+
+        .deploy-card p,
+        .deploy-card li,
+        .deploy-card code,
+        .deploy-card pre {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .deploy-card pre code {
+            font-size: 0.95rem;
+        }
+
+        .deploy-step {
+            margin-bottom: 2rem;
+        }
+
+        .deploy-card .figure {
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.25rem;
+            color: #111827;
+        }
+
+        .problem-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .problem-item {
+            display: grid;
+            grid-template-columns: 3rem 1fr;
+            gap: 1rem;
+            padding: 1.1rem 1.2rem;
+            border: 1px solid #e5e7eb;
+            border-left: 4px solid #0d6efd;
+            border-radius: 0.65rem;
+            background-color: #f8fafc;
+        }
+
+        .problem-number {
+            color: #0d6efd;
+            font-size: 1.1rem;
+            font-weight: 800;
+            line-height: 1.5;
+        }
+
+        .problem-item h6 {
+            color: #111827;
+        }
+
+        .solution {
+            color: #166534;
+        }
+
+        @media (max-width: 576px) {
+            .problem-item {
+                grid-template-columns: 1fr;
+                gap: 0.35rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container my-4">
+        <h1 class="mb-3">Week 4 Assignment</h1>
+        <p>This assignment page includes <b>Application description</b>, <b>Deployment steps</b>, <b>Evidence &
+                Verification</b>, and <b>Explanation & comparison</b>.</p>
+
+        <!-- Top Section: App Description & Demo -->
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Application Description</h4>
+                        <p class="card-text">
+                            This application is a 3-container full-stack web application converted from Docker Compose
+                            to a <strong>CSC Rahti (OpenShift/Kubernetes)</strong> deployment.
+                        </p>
+                        <p class="card-text">
+                            <strong>Architecture Overview:</strong>
+                        </p>
+                        <ul>
+                            <li><strong>Frontend:</strong> Nginx static web page presenting this documentation and an
+                                interactive Todo List application. It is publicly exposed to the Internet via a Rahti
+                                TLS Route.</li>
+                            <li><strong>Backend:</strong> Node.js/API communicating strictly through the
+                                internal Rahti cluster network. It interacts with the
+                                database.</li>
+                            <li><strong>Database:</strong> MySQL server running with a PersistentVolumeClaim (PVC) to
+                                guarantee data persistence.</li>
+                        </ul>
+                        <p class="card-text">
+                            <strong>Data Operations:</strong> The application demonstrates continuous <strong>Read
+                                operations</strong> (fetching the existing Todo list from MySQL) and <strong>Write
+                                operations</strong> (adding new Todo items and saving them permanently into MySQL).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Application Demo (Todo List) -->
+
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Application Demo -> To do list</h4>
+                        <p class="card-text">
+                            Manage your tasks here.</p>
+                        <!-- Add Todo Form -->
+                        <form id="todoForm" class="mb-3">
+                            <div class="input-group">
+                                <input type="text" id="todoInput" class="form-control" placeholder="Enter a new task..."
+                                    required>
+                                <button class="btn btn-primary" type="submit">Add Task</button>
+                            </div>
+                        </form>
+
+                        <!-- Todo List Display -->
+                        <ul id="todoList" class="list-group mb-3">
+                            <li class="list-group-item text-muted">Loading tasks from MySQL database...</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deployment Steps Section -->
+        <div class="card my-4 deploy-card">
+            <div class="card-body">
+                <h4 class="card-title">Deployment Steps</h4>
+                <p class="card-text">Documentation of the procedures to deploy the 3-container application on Rahti
+                    using PVC, ConfigMaps, and Secrets.</p>
+
+                <h5>Preconditions</h5>
+                <ol>
+
+                    <li>Create a new project in Rahti and bucket in Allas</li>
+                    <figure class="figure">
+                        <img src="https://a3s.fi/swift/v1/week4-media/1.png" class="figure-img img-fluid img-thumbnail"
+                            alt="Create a project in Rahti">
+                        <figcaption class="figure-caption">Figure 1: Create a new project in Rahti.
+                        </figcaption>
+                    </figure>
+                    <figure class="figure">
+                        <img src="https://a3s.fi/swift/v1/week4-media/2.png" class="figure-img img-fluid img-thumbnail"
+                            alt="Create a bucket in Allas">
+                        <figcaption class="figure-caption">Figure 2: Create a a bucket in Allas.
+                        </figcaption>
+                    </figure>
+
+                    <li>Create my todo list application with frontend, backend and database files</li>
+                    <figure class="figure">
+                        <img src="https://a3s.fi/swift/v1/week4-media/3.png" class="figure-img img-fluid img-thumbnail"
+                            alt="app with all the necessary files">
+                        <figcaption class="figure-caption">Figure 3: Create an application with all the necessary files.
+                        </figcaption>
+                    </figure>
+                </ol>
+
+                <!-- Deployment steps -->
+                <hr class="my-4">
+                <h5>Step 1: Create Yaml files for frontend, backend and database</h5>
+                <p>The Rahti folder includes all the necessary yaml files.</p>
+                <figure class="figure">
+                    <img src="https://a3s.fi/swift/v1/week4-media/4.png" class="figure-img img-fluid img-thumbnail"
+                        alt="Create Yaml files for frontend, backend and database">
+                    <figcaption class="figure-caption">Figure 4: Create Yaml files.
+                    </figcaption>
+                </figure>
+
+                <h5>Step 2: Create the database storage and configuration</h5>
+                <p>Apply the PVC, configMap, and secret before starting the application</p>
+                <div class="bg-dark text-light p-3 rounded mb-3">
+                    <pre class="m-0 text-light"><code>oc apply -f rahti/mysql-pvc.yaml
+oc apply -f rahti/configmap.yaml
+oc create secret generic mysql-secret \
+	--from-literal=MYSQL_ROOT_PASSWORD='<strong-root-password>' \
+	--from-literal=DB_PASSWORD='<strong-app-password>'
+</code></pre>
+                </div>
+                <figure class="figure">
+                    <img src="https://a3s.fi/swift/v1/week4-media/5.png" class="figure-img img-fluid img-thumbnail"
+                        alt="Create database storage and configuration">
+                    <figcaption class="figure-caption">Figure 5: Create database storage and configuration.
+                    </figcaption>
+                </figure>
+                <figure class="figure">
+                    <img src="https://a3s.fi/swift/v1/week4-media/6.png" class="figure-img img-fluid img-thumbnail"
+                        alt="Check the creation status">
+                    <figcaption class="figure-caption">Figure 6: Check the creation status.
+                    </figcaption>
+                </figure>
+
+
+                <h5>Step 3: Deploy MySQL</h5>
+                <p>The MySQL deployment should use the official MySQL image, and the service should expose port 3306
+                    only inside the Rahti project.</p>
+                <div class="bg-dark text-light p-3 rounded mb-3">
+                    <pre class="m-0 text-light"><code>oc apply -f rahti/mysql-deployment.yaml
+oc apply -f rahti/mysql-service.yaml
+oc get pods
+oc get pvc</code></pre>
+                </div>
+                <figure class="figure">
+                    <img src="https://a3s.fi/swift/v1/week4-media/7.png" class="figure-img img-fluid img-thumbnail"
+                        alt="Deploy MySQL">
+                    <figcaption class="figure-caption">Figure 7: Deploy MySQL.
+                    </figcaption>
+                </figure>
+
+
+                <h5>Step 4: Deploy the Frontend and Backend</h5>
+                <p><b>Deploy the Backend</b></p>
+                <p><i>During deploy the backend, an error occurred because "no image found in image index for
+                        architecture
+                        "amd64", variant "", OS "linux"". I am using Apple Silicon so the default image architecture is
+                        arm64, but Rahti required amd64. So Rahit was not able to find an image of amd64 in my Docker
+                        Hub.
+                    </i></p>
+                <div class="bg-dark text-light p-3 rounded mb-3">
+                    <pre class="m-0 text-light"><code>#Solution to the architecture error:
+docker build --platform linux/amd64 -t jessxu123/lempbackend:1.0.0 -f ./backend/Dockerfile .
+docker push jessxu123/lempbackend:1.0.0</code></pre>
+                </div>
+
+                <div class="bg-dark text-light p-3 rounded mb-3">
+                    <pre class="m-0 text-light"><code>oc apply -f rahti/backend-deployment.yaml
+oc apply -f rahti/backend-service.yaml
+oc rollout status deployment/backend-deployment</code></pre>
+                </div>
+
+
+                <figure class="figure">
+                    <img src="https://a3s.fi/swift/v1/week4-media/8.png" class="figure-img img-fluid img-thumbnail"
+                        alt="Deploy the Backend">
+                    <figcaption class="figure-caption">Figure 8: Deploy the Backend.
+                    </figcaption>
+                </figure>
+
+                <figure class="figure">
+                    <img src="https://a3s.fi/swift/v1/week4-media/9.png" class="figure-img img-fluid img-thumbnail"
+                        alt="Error fix">
+                    <figcaption class="figure-caption">Figure 9: Error fix.
+                    </figcaption>
+                </figure>
+
+                <figure class="figure">
+                    <img src="https://a3s.fi/swift/v1/week4-media/10.png" class="figure-img img-fluid img-thumbnail"
+                        alt="Succeed">
+                    <figcaption class="figure-caption">Figure 10: Deployment succeeded.
+                    </figcaption>
+                </figure>
+
+                <p><b>Deploy the Frontend</b></p>
+                <div class="bg-dark text-light p-3 rounded mb-3">
+                    <pre class="m-0 text-light"><code>#Solution to the architecture error:
+docker build --platform linux/amd64 -t jessxu123/lempfrontend:1.0.0 -f ./frontend/Dockerfile .
+docker push jessxu123/lempfrontend:1.0.0</code></pre>
+                </div>
+                <div class="bg-dark text-light p-3 rounded mb-3">
+                    <pre class="m-0 text-light"><code>oc apply -f rahti/frontend-deployment.yaml
+oc apply -f rahti/frontend-service.yaml</code></pre>
+                </div>
+
+                <figure class="figure">
+                    <img src="https://a3s.fi/swift/v1/week4-media/11.png" class="figure-img img-fluid img-thumbnail"
+                        alt="Deploy the Frontend">
+                    <figcaption class="figure-caption">Figure 11: Deploy the Frontend.
+                    </figcaption>
+                </figure>
+
+
+                <h5>Step 4: Create the Public Route</h5>
+                <div class="bg-dark text-light p-3 rounded mb-3">
+                    <pre class="m-0 text-light"><code>
+oc create route edge frontend --service=frontend-service --insecure-policy=Redirect
+oc get route</code></pre>
+                </div>
+                <figure class="figure">
+                    <img src="https://a3s.fi/swift/v1/week4-media/12.png" class="figure-img img-fluid img-thumbnail"
+                        alt="Create the Public Route">
+                    <figcaption class="figure-caption">Figure 12: Create the Public Route
+                    </figcaption>
+                </figure>
+
+                <figure class="figure">
+                    <img src="https://a3s.fi/swift/v1/week4-media/13.png" class="figure-img img-fluid img-thumbnail"
+                        alt="Verify the status">
+                    <figcaption class="figure-caption">Figure 13: Verify the status
+                    </figcaption>
+                </figure>
+                </hr>
+            </div>
+
+
+
+            <!-- Evidence & Verification Section -->
+            <div class="col-md-12 mb-4">
+                <div class="card h-100">
+                    <div class="card-body py-4 px-4">
+                        <h4 class="card-title section-title">Evidence & Verification</h4>
+                        <h5 class="fw-bold mt-3">1. End to End application functionality</h5>
+                        <p>Evidence that the full stack is working properly via REST API and DB query.</p>
+                        <figure class="figure">
+                            <img src="https://a3s.fi/swift/v1/week4-media/14.png"
+                                class="figure-img img-fluid img-thumbnail" alt="Verify the status">
+                            <figcaption class="figure-caption">Figure 14: Verify the status
+                            </figcaption>
+                        </figure>
+                        <figure class="figure">
+                            <img src="https://a3s.fi/swift/v1/week4-media/15.png"
+                                class="figure-img img-fluid img-thumbnail" alt="Verify MySQL">
+                            <figcaption class="figure-caption">Figure 15: Verify MySQL
+                            </figcaption>
+                        </figure>
+
+                        <h5 class="fw-bold mt-4">2. Database Persistence</h5>
+                        <p>MySQL ensures no data loss upon Pod reconstruction by utilizing the Kubernetes PVC
+                            persistence mounting mechanism. It is like saving your data directly to an external USB
+                            drive or cloud storage. If the physical computer breaks or reboots, you can simply plug that
+                            USB drive into a new computer. The data remains completely intact and immediately
+                            accessible.</p>
+                        <figure class="figure">
+                            <img src="https://a3s.fi/swift/v1/week4-media/16.png"
+                                class="figure-img img-fluid img-thumbnail" alt="Database persistence">
+                            <figcaption class="figure-caption">Figure 16: Database persistence
+                            </figcaption>
+                        </figure>
+
+                        <h5 class="fw-bold mt-4">3. Container Orchestration Experiments</h5>
+                        <ul>
+                            <li><strong>Pod Recovery Experiment:</strong></li>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week4-media/17.png"
+                                    class="figure-img img-fluid img-thumbnail" alt="Pod Recovery Experiment">
+                                <figcaption class="figure-caption">Figure 17: Pod Recovery Experiment
+                                </figcaption>
+                            </figure>
+
+
+                            <li><strong>Scaling Experiment:</strong></li>
+                            <p>The Deployment Controller attempted to scale up the replica set from 1 to 3 (Scaled up
+                                replica set ... from 1 to 3). However, only 1 replica was successfully created (1/3
+                                replicas created), triggering a ReplicaFailure state with FailedCreate.</p>
+                            <p>It demonstrated the interaction between Kubernetes dynamic scaling (DeploymentController)
+                                and OpenShift security/quota governance policies (Rahti Resource Quota limitation).</p>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week4-media/18.png"
+                                    class="figure-img img-fluid img-thumbnail" alt="Scaling Experiment">
+                                <figcaption class="figure-caption">Figure 18: Scaling Experiment
+                                </figcaption>
+                            </figure>
+
+                        </ul>
+
+                        <h5 class="fw-bold mt-4">4. Application Update (new image version: 1.0.1 -> 1.0.2)</h5>
+                        <p>OpenShift executed a zero-downtime RollingUpdate strategy. A new Pod with image 1.0.2 was
+                            created (ContainerCreating). As soon as the new Pod became ready (1/1 Running), the
+                            controller terminated (Terminating) the old 1.0.1 Pod.
+                        </p>
+                        <p>The application was successfully upgraded to version 1.0.2 without service downtime</p>
+                        <figure class="figure">
+                            <img src="https://a3s.fi/swift/v1/week4-media/19.png"
+                                class="figure-img img-fluid img-thumbnail" alt="Application Update">
+                            <figcaption class="figure-caption">Figure 19: Application Update
+                            </figcaption>
+                        </figure>
+                        <figure class="figure">
+                            <img src="https://a3s.fi/swift/v1/week4-media/20.png"
+                                class="figure-img img-fluid img-thumbnail" alt="result">
+                            <figcaption class="figure-caption">Figure 20: Update result
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Explanation & Comparison Section -->
+            <div class="col-md-12 mb-4">
+                <div class="card h-100">
+                    <div class="card-body py-4 px-4">
+                        <h4 class="card-title section-title">Explanation & Comparison</h4>
+
+                        <h5 class="fw-bold mt-4">1. ConfigMaps vs. Secrets</h5>
+                        <p>Both ConfigMaps and Secrets are used to separate configuration artifacts from container image
+                            content, keep applications portable and modular.</p>
+                        <p><b>ConfigMap:</b> Designed to store non-sensitive, plain-text configuration data (such as
+                            database
+                            hostnames, port numbers, environment flags, or configuration files like nginx.conf).</p>
+                        <p><b>Secret:</b> Designed specifically to store sensitive data (such as database passwords, API
+                            keys,
+                            SSH keys, and TLS certificates).</p>
+
+                        <h5 class="fw-bold mt-4">2. Database Persistence Mechanism</h5>
+                        <p>A PersistentVolumeClaim (PVC) in Rahti/OpenShift represents an abstract request for durable
+                            cloud block storage. Unlike a Docker Compose local volume—which stores data directly on a
+                            single host machine's local disk—a PVC binds to an independent, network-attached Persistent
+                            Volume (PV).</p>
+                        <ul>
+                            <li>
+                                Resilience: If a physical host in Rahti fails, OpenShift reschedules the MySQL Pod onto
+                                another healthy node and automatically re-binds the existing PVC, ensuring zero data
+                                loss.
+                            </li>
+                            <li>
+                                Decoupled Lifecycle: PVC in Rahti exists independently of the Pod lifecycle. Even
+                                if the MySQL Pod is manually deleted (oc delete pod), the PVC retains all database
+                                records safely in the cloud storage layer.
+                            </li>
+                        </ul>
+                        <p><b>Rahti PVC:</b> is similar like saving a file to Google drive. The data doesn't belong to a
+                            physical machine. If the machine breaks, one can simply login from another device,
+                            connecting to PVC, and all files are immediately loaded where you left them. </p>
+                        <p><b>Docker Compose Local Volume: </b> is more like saving files to a USB drive plugged into a
+                            laptop. It works great on your machine, but if your laptop breaks or you move to a server
+                            across the world, that local flash drive isn't accessible to other machines.</p>
+
+                        <h5 class="fw-bold mt-4">3. Pod Recovery & Orchestration</h5>
+                        <p><b>Self-Healing: </b>When a backend Pod is manually deleted using oc delete pod,
+                            Kubernetes/OpenShift doesn't leave the system in a broken state. Instead, it immediately
+                            detects that a Pod has disappeared and automatically schedules and spawns a brand-new Pod to
+                            replace it.</p>
+
+
+                        <h5 class="fw-bold mt-4">4. Service Discovery & Load Balancing</h5>
+                        <p>In OpenShift/Kubernetes, Pod IP addresses are temporary and change every time a Pod restarts,
+                            scales, or gets recreated.
+
+                        <p>Instead of connecting directly to an individual Pod's IP address, the frontend sends
+                            requests to a fixed Service name (e.g., http://backend-service:8000).</p>
+
+                        <p>The Service acts as a single, permanent virtual entry point that automatically keeps
+                            track
+                            of all active backend Pod IPs (Service Discovery) and evenly distributes incoming HTTP
+                            traffic across them (Load Balancing).</p>
+
+                        <h5 class="fw-bold mt-4">5. Problems & Solutions</h5>
+                        <div class="problem-list">
+                            <div class="problem-item">
+                                <div class="problem-number">01</div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">CPU architecture mismatch</h6>
+                                    <p class="mb-2">The images built on an Apple Silicon Mac used the ARM64
+                                        architecture, but Rahti requires Linux AMD64 images. Rahti could not find a
+                                        compatible image.</p>
+                                    <p class="solution mb-0"><strong>Solution:</strong> The backend and frontend images
+                                        were rebuilt with <code>--platform linux/amd64</code> and pushed to Docker Hub
+                                        again.</p>
+                                </div>
+                            </div>
+
+                            <div class="problem-item">
+                                <div class="problem-number">02</div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">Incorrect backend Service name</h6>
+                                    <p class="mb-2">The first frontend image configured Nginx to proxy requests to
+                                        <code>backend</code>, but the Kubernetes Service was named
+                                        <code>backend-service</code>. Nginx failed with a "host not found in upstream"
+                                        error.
+                                    </p>
+                                    <p class="solution mb-0"><strong>Solution:</strong> The Nginx upstream was changed
+                                        to <code>backend-service:8000</code>, using the internal Kubernetes Service DNS.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="problem-item">
+                                <div class="problem-number">03</div>
+                                <div>
+                                    <h6 class="fw-bold mb-2">OpenShift non-root restrictions</h6>
+                                    <p class="mb-2">Rahti runs containers with a non-root user. Nginx could not write to
+                                        its default cache directories or bind to privileged port 80, causing the
+                                        frontend Pod to enter <code>CrashLoopBackOff</code>.</p>
+                                    <p class="solution mb-0"><strong>Solution:</strong> Nginx temporary files and its
+                                        PID file were moved to <code>/tmp</code>. Nginx now listens on port
+                                        <code>8080</code>, and the Deployment and Service use that container port.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold mt-4">6. Comparison: Rahti vs. Docker Compose + cPouta</h5>
+                        <p><strong>Deployment:</strong></p>
+                        <p>cPouta requires manual provisioning of a virtual machine, installing Docker, and running
+                            docker compose up. Rahti utilizes declarative OpenShift/Kubernetes manifests (oc apply -f),
+                            allowing developers to deploy applications without managing underlying VMs or OS
+                            environments.</p>
+                        <p><strong>Networking:</strong></p>
+                        <p>Docker Compose relies on local bridge networks and static host port mappings on a single
+                            machine. Rahti abstracts network routing through Services (for internal DNS service
+                            discovery and load balancing) and Routes (for secure external HTTP/HTTPS access across
+                            cluster nodes).</p>
+                        <p><strong>Maintenance & Operations:</strong></p>
+                        <p>On cPouta, scaling, container recovery, and OS patches require manual sysadmin work. Rahti
+                            provides automated self-healing, rolling updates (RollingUpdate), dynamic resource
+                            management, and decoupled cloud storage (PVC), drastically reducing operational overhead
+                            while ensuring high availability.</p>
+                        <div class="my-4">
+                            <h5 class="fw-bold mb-3">Comparison: Rahti Deployment vs. Docker Compose + cPouta</h5>
+                            <table class="table table-bordered">
+                                <thead class="table-secondary">
+                                    <tr>
+                                        <th>Comparison Dimension</th>
+                                        <th>Docker Compose + cPouta (VM)</th>
+                                        <th>Rahti Deployment (PaaS / K8s)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-bold">Deployment Method</td>
+                                        <td>Manual login to VM to set up Docker environment and execute
+                                            <code>docker compose up</code>.</td>
+                                        <td>Declarative YAML manifests deployed in one click via
+                                            <code>oc apply -f rahti/</code> CLI commands.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Network Management</td>
+                                        <td>Requires manual Security Group setup, firewall configuration, public IP
+                                            binding, and port mapping.</td>
+                                        <td>Shields network complexity using Services and Routes, automating internal
+                                            routing and HTTPS encryption.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Ops &amp; Scaling</td>
+                                        <td>Single-host operation requiring manual repairs on crash; scaling requires
+                                            provisioning additional VMs.</td>
+                                        <td>Automated health checks with <strong>Self-Healing</strong> (Pod recovery)
+                                            and dynamic replica scaling.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+        <script>
+            const todoForm = document.getElementById('todoForm');
+            const todoInput = document.getElementById('todoInput');
+            const todoList = document.getElementById('todoList');
+
+            function renderTodos(todos) {
+                todoList.innerHTML = '';
+                if (todos.length === 0) {
+                    todoList.innerHTML = '<li class="list-group-item text-muted">No tasks yet.</li>';
+                    return;
+                }
+
+                todos.forEach(todo => {
+                    const item = document.createElement('li');
+                    item.className = 'list-group-item d-flex justify-content-between align-items-center';
+                    item.innerHTML = `<span>${todo.task}</span><small class="text-muted">${todo.created_at}</small>`;
+                    todoList.appendChild(item);
+                });
+            }
+
+            async function loadTodos() {
+                const response = await fetch('/api/todos');
+                if (!response.ok) {
+                    throw new Error(`GET /api/todos failed (${response.status})`);
+                }
+                renderTodos(await response.json());
+            }
+
+            todoForm.addEventListener('submit', async event => {
+                event.preventDefault();
+                const task = todoInput.value.trim();
+                if (!task) return;
+
+                const response = await fetch('/api/todos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ task })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`POST /api/todos failed (${response.status})`);
+                }
+
+                todoInput.value = '';
+                await loadTodos();
+            });
+
+            loadTodos().catch(error => {
+                todoList.innerHTML = `<li class="list-group-item text-danger">Unable to load tasks: ${error.message}</li>`;
+            });
+        </script>
+</body>
+
+</html>
