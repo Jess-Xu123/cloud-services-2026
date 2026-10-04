@@ -154,12 +154,14 @@
                             <li><strong>Automated Deployment:</strong> Integrated with a <strong>GitHub Actions CI/CD
                                     pipeline</strong> that automatically builds, pushes container images on code
                                 changes, and updates the application on CSC Rahti via OpenShift CLI.</li>
-                            <li><strong>Health & Reliability:</strong> Configured with Kubernetes <strong>Liveness and
-                                    Readiness Probes</strong> to ensure self-healing and zero-downtime availability.
+                            <li><strong>Health & Reliability:</strong> The frontend Nginx Deployment uses HTTP
+                                <strong>Liveness and Readiness Probes</strong> on <code>/</code> port
+                                <code>8080</code>. Readiness controls whether the pod receives Service traffic.
                             </li>
-                            <li><strong>Monitoring & Logs:</strong> Enhanced with structured logging (tracking request
-                                paths and response times) accessible via cluster logs, alongside dedicated dependency
-                                health check endpoints.</li>
+                            <li><strong>Monitoring & Logs:</strong> Nginx writes JSON access logs containing request
+                                paths, status codes, and response times to stdout, where they can be retrieved with
+                                <code>oc logs</code>. The backend remains unchanged.
+                            </li>
                         </ul>
                         <p class="mb-0">
                             <strong>Data Operations:</strong> Tasks are stored in MySQL, task lists are cached in Redis,
@@ -443,26 +445,20 @@
                 </figcaption>
             </figure>
             <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week5-media/5.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 5: Oc create Unsplash access key.
+                <img src="https://a3s.fi/swift/v1/week6-media/7.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 7:Verify frontend image from oc CLI.
                 </figcaption>
             </figure>
+            <figure class="figure">
+                <video class="figure-img img-fluid" controls poster="https://a3s.fi/swift/v1/week6-media/7.png">
+                    <source src="https://a3s.fi" type="video/mp4">
+                </video>
+                <figcaption class="figure-caption">Figure 8: GitHub Actions Workflow video.</figcaption>
+            </figure>
 
-            <h5 class="fw-bold mt-4">Step 3: Deploy MySQL and Redis</h5>
-            <p>Apply the persistent storage, database, and Redis resources. The Redis container runs as a cache without
-                RDB/AOF disk persistence because the Rahti container filesystem is not writable for Redis snapshots;
-                todo data remains persistent in MySQL.</p>
-            <div class="code-block">
-                <pre><code>oc apply -f rahti/mysql-pvc.yaml
-oc apply -f rahti/mysql-deployment.yaml
-oc apply -f rahti/mysql-service.yaml
-oc apply -f rahti/redis-deployment.yaml
-oc apply -f rahti/redis-service.yaml
+            <h5 class="fw-bold mt-4">Step 3: </h5>
+            <p></p>
 
-oc get pvc
-oc get pods
-oc get services</code></pre>
-            </div>
             <p>Wait until the MySQL and Redis pods show <code>Running</code> and <code>Ready</code> before continuing.
             </p>
             <figure class="figure">
@@ -590,6 +586,38 @@ curl -i -X POST "$APP_URL/api/todos" \
                 </figcaption>
             </figure>
 
+            <h5 class="fw-bold mt-4">Step 8: Verify Frontend Probes and Structured Logs</h5>
+            <p>The frontend Deployment probes Nginx on HTTP <code>/</code> port <code>8080</code>. Liveness detects a
+                stuck Nginx process and allows Kubernetes to restart it. Readiness controls whether the pod receives
+                traffic through <code>frontend-service</code>; a failed readiness check removes it from the Service
+                endpoints without restarting the container.</p>
+            <div class="code-block">
+                <pre><code>oc get deployment frontend-deployment
+oc get pods -l app=frontend
+oc get endpoints frontend-service
+oc logs deployment/frontend-deployment --tail=20</code></pre>
+            </div>
+            <p>To demonstrate readiness failure, use a closed port (the SPA falls back to <code>index.html</code> for
+                unknown paths, so a made-up path can still return 200). Restore port <code>8080</code> immediately after
+                confirming the endpoint is removed.</p>
+            <div class="code-block">
+                <pre><code>oc patch deployment/frontend-deployment --type=strategic -p='{"spec":{"template":{"spec":{"containers":[{"name":"frontend","readinessProbe":{"httpGet":{"path":"/","port":9999}}}]}}}}'
+oc get pods -l app=frontend
+oc get endpoints frontend-service
+
+oc patch deployment/frontend-deployment --type=strategic -p='{"spec":{"template":{"spec":{"containers":[{"name":"frontend","readinessProbe":{"httpGet":{"path":"/","port":8080}}}]}}}}'
+oc rollout status deployment/frontend-deployment</code></pre>
+            </div>
+            <p>During the test the frontend pod was <code>Running</code> but <code>0/1 Ready</code>, and the Service had
+                no endpoints. After restoring port <code>8080</code>, the pod returned to <code>1/1 Ready</code> and its
+                endpoint was added again.</p>
+            <p>Nginx writes JSON access logs to stdout with request path, status, and response time. After the updated
+                frontend image is deployed, capture a real line with
+                <code>oc logs deployment/frontend-deployment</code>.
+                A possible alert is to page if the 5xx ratio exceeds 5% or response time exceeds one second for five
+                consecutive minutes. These are frontend Nginx logs; the assignment rubric specifically mentions
+                backend logging, so this frontend-only choice may need instructor approval.
+            </p>
 
         </div>
     </div>
