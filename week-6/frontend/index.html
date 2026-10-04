@@ -450,20 +450,29 @@
                 </figcaption>
             </figure>
             <figure class="figure">
-                <video class="figure-img img-fluid" controls poster="https://a3s.fi/swift/v1/week6-media/7.png">
-                    <source src="https://a3s.fi" type="video/mp4">
+                <video class="figure-img img-fluid" controls poster="https://a3s.fi/swift/v1/week6-media/8.mov">
+                    <source src="https://a3s.fi/swift/v1/week6-media/8.mov" type="video/mp4">
                 </video>
                 <figcaption class="figure-caption">Figure 8: GitHub Actions Workflow video.</figcaption>
             </figure>
 
-            <h5 class="fw-bold mt-4">Step 3: </h5>
-            <p></p>
-
-            <p>Wait until the MySQL and Redis pods show <code>Running</code> and <code>Ready</code> before continuing.
-            </p>
+            <h5 class="fw-bold mt-4">Step 3: Add a liveness and a readiness probe to frontend deployment</h5>
             <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week5-media/6.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 6: Redis running.
+                <img src="https://a3s.fi/swift/v1/week6-media/9.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 9: Add a liveness and a readiness probe.
+                </figcaption>
+            </figure>
+            <p>Verify the liveness</p>
+            <div class="code-block">
+                <pre><code>oc apply -f frontend-deployment.yaml
+oc describe deployment frontend-deployment | grep -A 10 "Liveness"
+                </code></pre>
+            </div>
+
+
+            <figure class="figure">
+                <img src="https://a3s.fi/swift/v1/week6-media/10.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 10: Verify the liveness.
                 </figcaption>
             </figure>
 
