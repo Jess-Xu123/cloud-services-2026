@@ -28,9 +28,9 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/todo-frontend:${{ github.sha }}
 
       - name: Install OpenShift CLI (oc)
-        uses: redhat-actions/oc-installer@v1
+        uses: redhat-actions/openshift-tools-installer@v1
         with:
-          oc_version: "4.15"
+          oc: "4.15"
 
       - name: Deploy Frontend to Rahti
         run: |
