@@ -30,7 +30,7 @@ jobs:
       - name: Install OpenShift CLI (oc)
         uses: redhat-actions/oc-installer@v1
         with:
-          oc_version: "latest"
+          oc_version: "4.15"
 
       - name: Deploy Frontend to Rahti
         run: |
