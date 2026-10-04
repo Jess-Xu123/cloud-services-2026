@@ -6,6 +6,9 @@ spec:
   replicas: 1
   strategy:
     type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: frontend
@@ -16,7 +19,23 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: jessxu123/lempfrontend:1.0.7
+          image: jessxu123/todo-frontend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3

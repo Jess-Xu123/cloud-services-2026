@@ -70,17 +70,18 @@
         }
 
         .figure {
-            display: block;
-            width: 100%;
-            max-width: 1200px;
-            margin: 1rem 0 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: min(100%, 1040px);
+            margin: 1rem auto 1.5rem;
         }
 
         .figure-img {
             display: block;
-            width: auto;
+            width: 100%;
             max-width: 100%;
-            max-height: 450px;
+            max-height: 600px;
             margin: 0 0 0.5rem;
             object-fit: contain;
             background-color: #ffffff;
@@ -88,10 +89,35 @@
             border-radius: 0.5rem;
         }
 
+        .figure video {
+            aspect-ratio: 16 / 9;
+            height: auto;
+        }
+
         .figure-caption {
-            text-align: left;
+            width: 100%;
+            text-align: center;
             color: #64748b;
             line-height: 1.45;
+        }
+
+        .problem-item {
+            display: grid;
+            grid-template-columns: minmax(170px, 0.8fr) minmax(0, 1fr) minmax(0, 1.2fr);
+            gap: 1rem;
+            padding: 1rem 0;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .problem-item h6,
+        .problem-item p {
+            margin: 0;
+        }
+
+        .problem-detail strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            color: #334155;
         }
 
         .todo-image {
@@ -104,7 +130,7 @@
 
         @media (max-width: 576px) {
             .problem-item {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
                 gap: 0.25rem;
             }
 
@@ -114,7 +140,11 @@
             }
 
             .figure-img {
-                max-height: 220px;
+                max-height: 320px;
+            }
+
+            .figure video {
+                max-height: none;
             }
         }
     </style>
@@ -149,6 +179,12 @@
                             <li><strong>Database:</strong> MySQL server configured with a PersistentVolumeClaim (PVC) to
                                 guarantee persistent data storage.</li>
                         </ul>
+                        <p><strong>Why deploy the frontend independently?</strong> </p>
+                        <p>In this application, the page layout,
+                            text, and static assets are expected to change more often than the backend API contract or
+                            database schema. A frontend-only pipeline lets me publish those presentation updates
+                            without rebuilding or restarting Flask, MySQL, or Redis. This is a project-specific choice:
+                            backend changes still require their own build and deployment.</p>
                         <h6 class="fw-bold text-dark mt-3">CI/CD & Observability</h6>
                         <ul class="mb-3">
                             <li><strong>Automated Deployment:</strong> Integrated with a <strong>GitHub Actions CI/CD
@@ -382,255 +418,241 @@
 
 
     <!-- SECTION: Deployment Steps Section (At the Bottom) -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <h3 class="section-title">Deployment Steps</h3>
-            <p class="text-secondary">Deploy my application with CI/CD pipeline</p>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="card question-card mb-4">
+                    <div class="card-body">
+                        <h3 class="section-title">Deployment Steps</h3>
+                        <p class="text-secondary">Deploy my application with CI/CD pipeline</p>
 
-            <h5 class="fw-bold mt-4">Preconditions</h5>
-            <ol>
-                <li>Create week 6 assignment in Rahti:</li>
-                <div class="row">
-                    <figure class="figure">
-                        <img src="https://a3s.fi/swift/v1/week6-media/1.png" class="figure-img img-fluid"
-                            alt="Create a project in Rahti">
-                        <figcaption class="figure-caption">Figure 1: Create week 6 assignment in Rahti.
-                        </figcaption>
-                    </figure>
+                        <h5 class="fw-bold mt-4">Preconditions</h5>
+                        <ol>
+                            <li>Create week 6 assignment in Rahti:</li>
+                            <div class="row">
+                                <figure class="figure">
+                                    <img src="https://a3s.fi/swift/v1/week6-media/1.png" class="figure-img img-fluid"
+                                        alt="Create a project in Rahti">
+                                    <figcaption class="figure-caption">Figure 1: Create week 6 assignment in Rahti.
+                                    </figcaption>
+                                </figure>
+                            </div>
+
+                            <li>Create GitHub Workflow yml file (I choose to build a pipeline for frontend):
+                            </li>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week6-media/2.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 2: Workflow yml.
+                                </figcaption>
+                            </figure>
+
+                            <li>Create GitHub Actions Secrets and Variables in Github:
+                            </li>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week6-media/4.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 3: Create Github actions secrets.
+                                </figcaption>
+                            </figure>
+
+                            <li>Make sure all the pods are running under week6 project:
+                            </li>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week6-media/3.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 4: Pods under week6-assignment.
+                                </figcaption>
+                            </figure>
+                        </ol>
+
+                        <hr class="my-4">
+
+                        <h5 class="fw-bold">Step 1: Commit and push my Week-6 to GitHub repository </h5>
+                        <p> The week-6 folder contains all the necessary files</p>
+                        <figure class="figure">
+                            <img src="https://a3s.fi/swift/v1/week6-media/5.png" class="figure-img img-fluid"
+                                alt="App structure">
+                            <figcaption class="figure-caption">Figure 5: Push week-6 files to github.
+                            </figcaption>
+                        </figure>
+
+                        <h5 class="fw-bold mt-4">Step 2: Observe the Github Action</h5>
+                        <p>Figure 6 shows the successful push-triggered workflow. Figure 7 shows the resulting frontend
+                            image in Rahti; its SHA tag should match the commit shown in Figure 6. The manifest's
+                            <code>latest</code> tag is only the initial image; the workflow deploys the immutable commit
+                            SHA tag.
+                        </p>
+                        <figure class="figure">
+                            <img src="https://a3s.fi/swift/v1/week6-media/6.png" class="figure-img img-fluid"
+                                alt="App structure">
+                            <figcaption class="figure-caption">Figure 6: Workflow.
+                            </figcaption>
+                        </figure>
+                        <figure class="figure">
+                            <img src="https://a3s.fi/swift/v1/week6-media/7.png" class="figure-img img-fluid"
+                                alt="App structure">
+                            <figcaption class="figure-caption">Figure 7: Verify the deployed frontend image tag.
+                            </figcaption>
+                        </figure>
+                        <figure class="figure">
+                            <video class="figure-img img-fluid" controls
+                                poster="https://a3s.fi/swift/v1/week6-media/8.mov">
+                                <source src="https://a3s.fi/swift/v1/week6-media/8.mov" type="video/mp4">
+                            </video>
+                            <figcaption class="figure-caption">Figure 8: GitHub Actions Workflow video.</figcaption>
+                        </figure>
+
+                        <h5 class="fw-bold mt-4">Step 3: Add a liveness and a readiness probe to frontend deployment
+                        </h5>
+                        <figure class="figure">
+                            <img src="https://a3s.fi/swift/v1/week6-media/9.png" class="figure-img img-fluid"
+                                alt="App structure">
+                            <figcaption class="figure-caption">Figure 9: Add a liveness and a readiness probe.
+                            </figcaption>
+                        </figure>
+                        <h5 class="fw-bold mt-4">Step 4: Verify Frontend Probes and Structured Logs</h5>
+                        <p>Inspect the active probes and retrieve Nginx access logs. Do not re-apply the initial-image
+                            manifest after CI has deployed a SHA-tagged image, since that could roll the Deployment
+                            back.</p>
+                        <div class="code-block">
+                            <pre><code>oc describe deployment frontend-deployment -n week6-assignment | grep -A 10 Liveness
+oc describe deployment frontend-deployment -n week6-assignment | grep -A 10 Readiness
+oc logs deployment/frontend-deployment -n week6-assignment --tail=20</code></pre>
+                        </div>
+                        <figure class="figure">
+                            <img src="https://a3s.fi/swift/v1/week6-media/10.png" class="figure-img img-fluid"
+                                alt="App structure">
+                            <figcaption class="figure-caption">Figure 10: Verify the liveness.
+                            </figcaption>
+                        </figure>
+                        <p>Figure 11 should show an actual JSON log line from the newly deployed frontend image,
+                            including
+                            the request path, response status, and response time. If the output is still the old common
+                            Nginx format, first verify that the current Deployment uses the new SHA-tagged image.</p>
+                        <figure class="figure">
+                            <img src="https://a3s.fi/swift/v1/week6-media/11.png" class="figure-img img-fluid"
+                                alt="App structure">
+                            <figcaption class="figure-caption">Figure 11: frontend logs.
+                            </figcaption>
+                        </figure>
+
+                        <h5 class="fw-bold mt-4">Step 5: Test fail readiness</h5>
+                        <p>I temporarily patched the live readiness probe to use closed port <code>9999</code>; I did
+                            not
+                            change the committed manifest. After recording the failed state, I restored port
+                            <code>8080</code>.
+                        </p>
+                        <div class="code-block">
+                            <pre><code>oc patch deployment/frontend-deployment -n week6-assignment --type=strategic \
+    -p='{"spec":{"template":{"spec":{"containers":[{"name":"frontend","readinessProbe":{"httpGet":{"path":"/","port":9999}}}]}}}}'
+oc get pods -n week6-assignment -l app=frontend
+oc get endpoints frontend-service -n week6-assignment
+
+oc patch deployment/frontend-deployment -n week6-assignment --type=strategic \
+    -p='{"spec":{"template":{"spec":{"containers":[{"name":"frontend","readinessProbe":{"httpGet":{"path":"/","port":8080}}}]}}}}'
+oc rollout status deployment/frontend-deployment -n week6-assignment</code></pre>
+                        </div>
+                        <p>During the test the frontend pod was <code>Running</code> but <code>0/1 Ready</code>, and the
+                            Service had
+                            no endpoints. After restoring port <code>8080</code>, the pod returned to
+                            <code>1/1 Ready</code> and its
+                            endpoint was added again.
+                        </p>
+                        <figure class="figure">
+                            <img src="https://a3s.fi/swift/v1/week6-media/12.png" class="figure-img img-fluid"
+                                alt="App structure">
+                            <figcaption class="figure-caption">Figure 12: Readiness failing.
+                            </figcaption>
+                        </figure>
+
+                        <figure class="figure">
+                            <img src="https://a3s.fi/swift/v1/week6-media/13.png" class="figure-img img-fluid"
+                                alt="App structure">
+                            <figcaption class="figure-caption">Figure 13: Change the port back and check out the logs.
+                            </figcaption>
+                        </figure>
+                        <p>A possible rule is to alert when the 5xx ratio exceeds 5% over a rolling five-minute window,
+                            if request volume is sufficient for that ratio to be meaningful. A separate alert could fire
+                            when p95 response time exceeds one second for five minutes. These are proposed rules, not
+                            alerts currently configured in Rahti. The sample logs are from frontend Nginx; the rubric
+                            explicitly asks for backend logging, so confirm that frontend logging is acceptable.</p>
+                        <h5 class="fw-bold mt-4">Problem Encountered & Solutions</h5>
+                        <div class="problem-list">
+                            <article class="problem-item">
+                                <h6 class="fw-bold">Cluster Resource Quota Exceeded</h6>
+                                <div class="problem-detail">
+                                    <strong>Problem</strong>
+                                    <p>Deployment failed during CI/CD rollout because the shared <code>limits.cpu</code>
+                                        quota was
+                                        exhausted.</p>
+                                </div>
+                                <div class="problem-detail">
+                                    <strong>Solution</strong>
+                                    <p>Scaled down unused legacy deployments and set <code>maxSurge: 0</code> for the
+                                        single-replica
+                                        frontend Deployment so an update does not require an extra pod.</p>
+                                </div>
+                            </article>
+                            <article class="problem-item">
+                                <h6 class="fw-bold">Project Namespace Mismatch</h6>
+                                <div class="problem-detail">
+                                    <strong>Problem</strong>
+                                    <p>CI/CD logged into Rahti but initially targeted the wrong project.</p>
+                                </div>
+                                <div class="problem-detail">
+                                    <strong>Solution</strong>
+                                    <p>Added an explicit <code>oc project week6-assignment</code> step before running
+                                        <code>oc set image</code>.
+                                    </p>
+                                </div>
+                            </article>
+                            <article class="problem-item">
+                                <h6 class="fw-bold">OpenShift CLI Download Returned 404</h6>
+                                <div class="problem-detail">
+                                    <strong>Problem</strong>
+                                    <p>The archived <code>oc-installer</code> action tried to download an unavailable
+                                        client archive.</p>
+                                </div>
+                                <div class="problem-detail">
+                                    <strong>Solution</strong>
+                                    <p>Replaced it with <code>openshift-tools-installer</code> and selected an
+                                        available <code>oc</code> 4.15 client.</p>
+                                </div>
+                            </article>
+                            <article class="problem-item">
+                                <h6 class="fw-bold">Todo API Returned HTTP 500</h6>
+                                <div class="problem-detail">
+                                    <strong>Problem</strong>
+                                    <p><code>/api/todos</code> failed because <code>appdb.todos</code> did not exist
+                                        in the Rahti database.</p>
+                                </div>
+                                <div class="problem-detail">
+                                    <strong>Solution</strong>
+                                    <p>Created the table with the schema from <code>db/init/init.sql</code> and
+                                        verified the API returned HTTP 200.</p>
+                                </div>
+                            </article>
+                            <article class="problem-item">
+                                <h6 class="fw-bold">Public Route and HTTPS</h6>
+                                <div class="problem-detail">
+                                    <strong>Problem</strong>
+                                    <p>The frontend Service had no public Route; the initial HTTP-only Route did not
+                                        serve HTTPS correctly.</p>
+                                </div>
+                                <div class="problem-detail">
+                                    <strong>Solution</strong>
+                                    <p>Created an edge Route with HTTP-to-HTTPS redirect and verified the page and
+                                        <code>/api/health</code> over HTTPS.
+                                    </p>
+                                </div>
+                            </article>
+                        </div>
+
+                    </div>
                 </div>
-
-                <li>Create GitHub Workflow yml file (I choose to build a pipeline for frontend):
-                </li>
-                <figure class="figure">
-                    <img src="https://a3s.fi/swift/v1/week6-media/2.png" class="figure-img img-fluid"
-                        alt="App structure">
-                    <figcaption class="figure-caption">Figure 2: Workflow yml.
-                    </figcaption>
-                </figure>
-
-                <li>Create GitHub Actions Secrets and Variables in Github:
-                </li>
-                <figure class="figure">
-                    <img src="https://a3s.fi/swift/v1/week6-media/4.png" class="figure-img img-fluid"
-                        alt="App structure">
-                    <figcaption class="figure-caption">Figure 3: Create Github actions secrets.
-                    </figcaption>
-                </figure>
-
-                <li>Make sure all the pods are running under week6 project:
-                </li>
-                <figure class="figure">
-                    <img src="https://a3s.fi/swift/v1/week6-media/3.png" class="figure-img img-fluid"
-                        alt="App structure">
-                    <figcaption class="figure-caption">Figure 4: Pods under week6-assignment.
-                    </figcaption>
-                </figure>
-            </ol>
-
-            <hr class="my-4">
-
-            <h5 class="fw-bold">Step 1: Commit and push my Week-6 to GitHub repository </h5>
-            <p> The week-6 folder contains all the necessary files</p>
-            <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week6-media/5.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 5: Push week-6 files to github.
-                </figcaption>
-            </figure>
-
-            <h5 class="fw-bold mt-4">Step 2: Observe the Github Action</h5>
-            <p>Observe the workflow in Github actions for deploying frontend to Rahti</p>
-            <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week6-media/6.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 6: Workflow.
-                </figcaption>
-            </figure>
-            <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week6-media/7.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 7:Verify frontend image from oc CLI.
-                </figcaption>
-            </figure>
-            <figure class="figure">
-                <video class="figure-img img-fluid" controls poster="https://a3s.fi/swift/v1/week6-media/8.mov">
-                    <source src="https://a3s.fi/swift/v1/week6-media/8.mov" type="video/mp4">
-                </video>
-                <figcaption class="figure-caption">Figure 8: GitHub Actions Workflow video.</figcaption>
-            </figure>
-
-            <h5 class="fw-bold mt-4">Step 3: Add a liveness and a readiness probe to frontend deployment</h5>
-            <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week6-media/9.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 9: Add a liveness and a readiness probe.
-                </figcaption>
-            </figure>
-            <p>Verify the liveness</p>
-            <div class="code-block">
-                <pre><code>oc apply -f frontend-deployment.yaml
-oc describe deployment frontend-deployment | grep -A 10 "Liveness"
-                </code></pre>
             </div>
-
-
-            <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week6-media/10.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 10: Verify the liveness.
-                </figcaption>
-            </figure>
-
-            <h5 class="fw-bold mt-4">Step 4: Update the Todo Database Table</h5>
-            <p>The MySQL Deployment uses a PVC and does not automatically run the local
-                <code>db/init/init.sql</code> file in Rahti. Create the table after MySQL is ready. If the table already
-                exists, check for <code>image_url</code> and run the <code>ALTER TABLE</code> statement only when that
-                column is missing.
-            </p>
-            <div class="code-block">
-                <pre><code>oc exec -it deployment/db -- mysql -u appuser -p appdb</code></pre>
-            </div>
-            <div class="code-block">
-                <pre><code>CREATE TABLE IF NOT EXISTS todos (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  task VARCHAR(255) NOT NULL,
-  image_url VARCHAR(1024) NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-SHOW COLUMNS FROM todos LIKE 'image_url';</code></pre>
-            </div>
-            <p>If <code>SHOW COLUMNS</code> returns no row, run this migration once. Do not run it when the column
-                already exists.</p>
-            <div class="code-block">
-                <pre><code>ALTER TABLE todos ADD COLUMN image_url VARCHAR(1024) NULL;</code></pre>
-            </div>
-            <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week5-media/7.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 7: Verify Database.
-                </figcaption>
-            </figure>
-
-            <h5 class="fw-bold mt-4">Step 5: Build and Push Updated Images</h5>
-            <p>Build for <code>linux/amd64</code> so the images run on Rahti. Use a new version tag whenever you publish
-                code changes. These are the versions used for this deployment.</p>
-            <div class="code-block">
-                <pre><code>docker login
-
-docker build --platform linux/amd64 -t jessxu123/lempbackend:1.0.3 -f backend/Dockerfile .
-docker push jessxu123/lempbackend:1.0.3
-
-docker build --platform linux/amd64 -t jessxu123/lempfrontend:1.0.5 -f frontend/Dockerfile .
-docker push jessxu123/lempfrontend:1.0.5</code></pre>
-            </div>
-            <p>Docker Hub must contain both repositories, and the logged-in account must have permission to push to
-                them. The image tags in the Deployment manifests must match the tags pushed here.</p>
-            <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week5-media/8.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 8: Docker container.
-                </figcaption>
-            </figure>
-            <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week5-media/9.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 9: Docker images.
-                </figcaption>
-            </figure>
-
-            <h5 class="fw-bold mt-4">Step 6: Apply Manifests and Wait for Rollouts</h5>
-            <p>Set the image tags in <code>rahti/backend-deployment.yaml</code> and
-                <code>rahti/frontend-deployment.yaml</code> to the versions pushed above, then apply the manifests.
-                Applying a changed image starts a new rollout.
-            </p>
-            <div class="code-block">
-                <pre><code>oc apply -f rahti/configmap.yaml
-oc apply -f rahti/redis-deployment.yaml
-oc apply -f rahti/redis-service.yaml
-oc apply -f rahti/backend-deployment.yaml
-oc apply -f rahti/backend-service.yaml
-oc apply -f rahti/frontend-deployment.yaml
-oc apply -f rahti/frontend-service.yaml
-
-oc rollout status deployment/cache
-oc rollout status deployment/backend-deployment
-oc rollout status deployment/frontend-deployment
-oc get pods</code></pre>
-            </div>
-            <p>For a later code update, build and push a new image tag, change the matching
-                <code>image:</code> value in the Deployment YAML, and apply that file again.
-            </p>
-            <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week5-media/11.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 10: Apply all the files.
-                </figcaption>
-            </figure>
-            <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week5-media/10.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 11: Pods.
-                </figcaption>
-            </figure>
-
-
-            <h5 class="fw-bold mt-4">Step 7: Create the Public Route and Test the App</h5>
-            <p>Create the public HTTPS route if it does not already exist, then test the health endpoint, task list,
-                and task creation.</p>
-            <div class="code-block">
-                <pre><code>oc get route frontend || oc create route edge frontend \
-  --service=frontend-service --insecure-policy=Redirect
-oc get route frontend
-
-APP_URL="https://$(oc get route frontend -o jsonpath='{.spec.host}')"
-curl -i "$APP_URL/api/health"
-curl -i "$APP_URL/api/todos"
-curl -i -X POST "$APP_URL/api/todos" \
-  -H 'Content-Type: application/json' \
-  --data '{"task":"Week 5 verification"}'</code></pre>
-            </div>
-            <p>A successful health check returns <code>200</code>; creating a task returns <code>201</code>. Reload the
-                page to confirm the task and its Unsplash image appear. To inspect the running application, use
-                <code>oc logs deployment/backend-deployment</code> and <code>oc logs deployment/cache</code>.
-            </p>
-            <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week5-media/12.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 12: Get routes for my app.
-                </figcaption>
-            </figure>
-            <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week5-media/13.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 13: Check API.
-                </figcaption>
-            </figure>
-
-            <h5 class="fw-bold mt-4">Step 8: Verify Frontend Probes and Structured Logs</h5>
-            <p>The frontend Deployment probes Nginx on HTTP <code>/</code> port <code>8080</code>. Liveness detects a
-                stuck Nginx process and allows Kubernetes to restart it. Readiness controls whether the pod receives
-                traffic through <code>frontend-service</code>; a failed readiness check removes it from the Service
-                endpoints without restarting the container.</p>
-            <div class="code-block">
-                <pre><code>oc get deployment frontend-deployment
-oc get pods -l app=frontend
-oc get endpoints frontend-service
-oc logs deployment/frontend-deployment --tail=20</code></pre>
-            </div>
-            <p>To demonstrate readiness failure, use a closed port (the SPA falls back to <code>index.html</code> for
-                unknown paths, so a made-up path can still return 200). Restore port <code>8080</code> immediately after
-                confirming the endpoint is removed.</p>
-            <div class="code-block">
-                <pre><code>oc patch deployment/frontend-deployment --type=strategic -p='{"spec":{"template":{"spec":{"containers":[{"name":"frontend","readinessProbe":{"httpGet":{"path":"/","port":9999}}}]}}}}'
-oc get pods -l app=frontend
-oc get endpoints frontend-service
-
-oc patch deployment/frontend-deployment --type=strategic -p='{"spec":{"template":{"spec":{"containers":[{"name":"frontend","readinessProbe":{"httpGet":{"path":"/","port":8080}}}]}}}}'
-oc rollout status deployment/frontend-deployment</code></pre>
-            </div>
-            <p>During the test the frontend pod was <code>Running</code> but <code>0/1 Ready</code>, and the Service had
-                no endpoints. After restoring port <code>8080</code>, the pod returned to <code>1/1 Ready</code> and its
-                endpoint was added again.</p>
-            <p>Nginx writes JSON access logs to stdout with request path, status, and response time. After the updated
-                frontend image is deployed, capture a real line with
-                <code>oc logs deployment/frontend-deployment</code>.
-                A possible alert is to page if the 5xx ratio exceeds 5% or response time exceeds one second for five
-                consecutive minutes. These are frontend Nginx logs; the assignment rubric specifically mentions
-                backend logging, so this frontend-only choice may need instructor approval.
-            </p>
-
         </div>
-    </div>
-
     </div>
 
     <!-- Bootstrap JS -->
