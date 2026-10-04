@@ -427,50 +427,19 @@
 
             <hr class="my-4">
 
-            <h5 class="fw-bold">Step 1: Commit and push to my GitHub repository </h5>
-            <p></p>
-            <p>You can see the full code from my git repo - week-5.</p>
-            <ul>
-                <li><code>backend/app.py</code>: fetches task images from Unsplash, stores their URLs in MySQL, caches
-                    todo reads in Redis, and invalidates the cache after a successful insert.</li>
-                <li><code>backend/requirements.txt</code>: lists the Flask, MySQL, Redis, and HTTP client dependencies.
-                </li>
-                <li><code>db/init/init.sql</code>: defines the <code>todos</code> table, including the
-                    <code>image_url</code> column, for local Docker Compose initialization.
-                </li>
-                <li><code>frontend/index.html</code>: renders todo images and reports API errors.</li>
-                <li><code>rahti/configmap.yaml</code>, <code>rahti/redis-deployment.yaml</code>, and
-                    <code>rahti/redis-service.yaml</code>: configure the Redis service and backend connection.
-                </li>
-                <li><code>rahti/backend-deployment.yaml</code> and <code>rahti/frontend-deployment.yaml</code>:
-                    configure image versions and runtime settings.</li>
-            </ul>
+            <h5 class="fw-bold">Step 1: Commit and push my Week-6 to GitHub repository </h5>
+            <p> The week-6 folder contains all the necessary files</p>
             <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week5-media/3.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 3: example code of redis-deployment.yaml.
+                <img src="https://a3s.fi/swift/v1/week6-media/5.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 5: Push week-6 files to github.
                 </figcaption>
             </figure>
 
-            <h5 class="fw-bold mt-4">Step 2: Configure Rahti Secrets and Application Settings</h5>
-            <p>Select the Week 5 project and apply the ConfigMap. Create the Secrets with your own values in the
-                terminal. Replace the example values locally; never put real passwords or API keys in this page, a
-                ConfigMap, or a screenshot.</p>
-            <div class="code-block">
-                <pre><code>oc project week5-assignment
-oc apply -f rahti/configmap.yaml
-
-oc create secret generic mysql-secret \
-  --from-literal=MYSQL_ROOT_PASSWORD='REPLACE_WITH_MYSQL_ROOT_PASSWORD' \
-  --from-literal=DB_PASSWORD='REPLACE_WITH_DATABASE_PASSWORD' \
-  --dry-run=client -o yaml | oc apply -f -
-
-oc create secret generic unsplash-secret \
-  --from-literal=UNSPLASH_ACCESS_KEY='REPLACE_WITH_UNSPLASH_ACCESS_KEY' \
-  --dry-run=client -o yaml | oc apply -f -</code></pre>
-            </div>
+            <h5 class="fw-bold mt-4">Step 2: Observe the Github Action</h5>
+            <p>Observe the workflow in Github actions for deploying frontend to Rahti</p>
             <figure class="figure">
-                <img src="https://a3s.fi/swift/v1/week5-media/4.png" class="figure-img img-fluid" alt="App structure">
-                <figcaption class="figure-caption">Figure 4: Get Unsplash access key.
+                <img src="https://a3s.fi/swift/v1/week6-media/6.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 6: Workflow.
                 </figcaption>
             </figure>
             <figure class="figure">
