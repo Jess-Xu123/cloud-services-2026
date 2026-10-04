@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 6 Assignment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .card {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+            background-color: #ffffff;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .card-body {
+            padding: 1.75rem;
+        }
+
+        .section-title {
+            color: #0f172a;
+            font-weight: 700;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-card {
+            border-top: 4px solid #2563eb;
+            height: 100%;
+        }
+
+        .question-badge {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 0.375rem;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background-color: #0f172a;
+            color: #f8fafc;
+            border-radius: 0.5rem;
+            padding: 1rem 1.25rem;
+            font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .figure {
+            display: block;
+            width: 100%;
+            max-width: 1200px;
+            margin: 1rem 0 1.5rem;
+        }
+
+        .figure-img {
+            display: block;
+            width: auto;
+            max-width: 100%;
+            max-height: 450px;
+            margin: 0 0 0.5rem;
+            object-fit: contain;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+        }
+
+        .figure-caption {
+            text-align: left;
+            color: #64748b;
+            line-height: 1.45;
+        }
+
+        .todo-image {
+            width: 88px;
+            height: 72px;
+            flex: 0 0 auto;
+            object-fit: cover;
+            border-radius: 0.375rem;
+        }
+
+        @media (max-width: 576px) {
+            .problem-item {
+                grid-template-columns: 1fr;
+                gap: 0.25rem;
+            }
+
+            .todo-image {
+                width: 72px;
+                height: 64px;
+            }
+
+            .figure-img {
+                max-height: 220px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container my-5">
+        <!-- Main Title Header -->
+        <div class="mb-4">
+            <h1 class="fw-bold text-dark">Week 6 Assignment</h1>
+            <p class="text-secondary fs-5"></p>
+        </div>
+
+        <!-- ROW 1: Application Description | Application Demo -->
+        <div class="row mb-4">
+            <!-- Application Description -->
+            <div class="col-lg-6 mb-3 mb-lg-0">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="fw-bold mb-3">Application Description</h4>
+                        <p>
+                            This application is a full-stack web system converted from Docker Compose
+                            to a <strong>CSC Rahti (OpenShift/Kubernetes)</strong> cloud environment.
+                        </p>
+                        <h6 class="fw-bold text-dark mt-3">Architecture Overview:</h6>
+                        <ul class="mb-3">
+                            <li><strong>Frontend:</strong> Nginx static web server serving this documentation and an
+                                interactive Todo List application, accessible publicly via a TLS Route.</li>
+                            <li><strong>Backend:</strong> Python Flask API isolated within the internal cluster network,
+                                using Redis to cache task lists and Unsplash to fetch task images.</li>
+                            <li><strong>Database:</strong> MySQL server configured with a PersistentVolumeClaim (PVC) to
+                                guarantee persistent data storage.</li>
+                        </ul>
+                        <h6 class="fw-bold text-dark mt-3">CI/CD & Observability</h6>
+                        <ul class="mb-3">
+                            <li><strong>Automated Deployment:</strong> Integrated with a <strong>GitHub Actions CI/CD
+                                    pipeline</strong> that automatically builds, pushes container images on code
+                                changes, and updates the application on CSC Rahti via OpenShift CLI.</li>
+                            <li><strong>Health & Reliability:</strong> Configured with Kubernetes <strong>Liveness and
+                                    Readiness Probes</strong> to ensure self-healing and zero-downtime availability.
+                            </li>
+                            <li><strong>Monitoring & Logs:</strong> Enhanced with structured logging (tracking request
+                                paths and response times) accessible via cluster logs, alongside dedicated dependency
+                                health check endpoints.</li>
+                        </ul>
+                        <p class="mb-0">
+                            <strong>Data Operations:</strong> Tasks are stored in MySQL, task lists are cached in Redis,
+                            and new tasks can include an image from Unsplash.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Application Demo (Todo List - Unchanged) -->
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="fw-bold mb-3">Application Demo — To Do List</h4>
+                        <p class="text-secondary">Tasks are stored in MySQL and cached in Redis.</p>
+
+                        <!-- Form -->
+                        <form id="todoForm" class="mb-3">
+                            <div class="input-group">
+                                <input type="text" id="todoInput" class="form-control" placeholder="Enter a new task..."
+                                    required>
+                                <button class="btn btn-primary fw-semibold" type="submit">Add Task</button>
+                            </div>
+                        </form>
+
+                        <!-- Todo List -->
+                        <ul id="todoList" class="list-group mb-0">
+                            <li class="list-group-item text-muted">Loading tasks...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROW 2: Question 1 Card | Question 2 Card -->
+        <div class="row mb-4">
+            <!-- Question 1 Card -->
+            <div class="col-lg-6 mb-3 mb-lg-0">
+                <div class="card question-card">
+                    <div class="card-body">
+                        <span class="question-badge">QUESTION 1</span>
+                        <h4 class="section-title">Explain the difference between Continuous Integration, Continuous
+                            Delivery and Continuous Deployment. </h4>
+                        <p><strong>Continuous Integration:</strong> refers to the practice of automatically and
+                            frequently integrating code changes into a shared source code repository and automatically
+                            built and tested (Red Hat, 2025).
+                        </p>
+                        <p>The CI pipeline is triggered when a developer pushes code or creates a pull request. It
+                            builds the application and runs automated tests to detect integration problems early. The
+                            goal of CI is to make sure new code can be safely integrated with the existing
+                            code.</p>
+                        <p>Imagining this as building Lego together with friends. Every time a friend finishes a small
+                            block, they bring it to the main table and connect it to the shared model. An
+                            automatic machine checks whether the new block fits and whether it breaks anything that has
+                            already been built.</p>
+                        <p><strong>Continuous Delivery:</strong> after passing CI, the application is automatically
+                            prepared and kept ready for release, but a human needs to decide when to deploy it to
+                            production (Alex M., 2026).</p>
+                        <p>After the test passes, the application is automatically packaged and deployed to a staging or
+                            other pre-production environment. The application is kept in a release-ready state, but a
+                            human still decides when to deploy it to production.</p>
+                        <p><strong>Continuous Deployment:</strong> in practice means automating the releases of a
+                            developer's changes from the repository to production, where it is usable by customers (Red
+                            Hat, 2025).
+                        </p>
+                        <p>Continuous deployment refers to fully automated release. If code passes all automated tests,
+                            it goes live to end users immediately. The main difference between Continuous Delivery
+                            and Continuous Deployment is whether human intervention is required before production
+                            deployment.</p>
+
+                        <ul>
+                            <li>Red Hat. (2025, June 10). What is CI/CD? Red Hat.
+                                https://www.redhat.com/en/topics/devops/what-is-ci-cd</li>
+                            <li>Alex M. (2026, June 5). Continuous delivery vs continuous deployment: Key differences
+                                and when to use each. DeployHQ.
+                                https://www.deployhq.com/blog/continuous-delivery-vs-continuous-deployment</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2 Card -->
+            <div class="col-lg-6">
+                <div class="card question-card">
+                    <div class="card-body">
+                        <span class="question-badge">QUESTION 2</span>
+                        <h4 class="section-title">Describe the structure of a GitHub Actions workflow (triggers, jobs,
+                            steps). What would a minimal pipeline for the app you built in Week 4/5 need to do?</h4>
+
+                        <p>A GitHub Action workflow is an automated process defined in a <code>.yml</code> file inside
+                            the <code>.github/workflows</code> directory.</p>
+                        <p><strong>Triggers:</strong> events that instruct GitHub Actions when to execute the workflow.
+                            Common triggers include code <code>pushe</code>, <code>pull_request</code> or
+                            <code>schedule</code>.
+                        </p>
+                        <p><strong>Jobs:</strong> define what the workflow will actually execute. A single workflow can
+                            contain one or multiple jobs running either in parallel or sequentially depending on
+                            dependencies.</p>
+                        <p><strong>Steps:</strong> individual tasks executed sequentially within a single job. A step
+                            can either run shell commands/scripts or execute reusable pre-built components known as
+                            Actions.
+                        </p>
+                        <p><strong>My week 5 application is an To-Do App with Redis cache and Unsplash Public
+                                API.</strong> A minimal CI pipeline for this application would be:
+                        <ul>
+                            <li>Trigger: automatically start when I push code to the <code>main</code> branch</li>
+                            <li>Checkout code: retrieve the repository source code using
+                                <code>actions/checkout@v4</code>
+                            </li>
+                            <li>Set up runtime environment: initialize the required runtime(Python) on the virtual
+                                runner.</li>
+                            <li>Provision Redis container: spin up a temporary, lightweight Redis service container
+                                (using image <code>redis:7-alpine</code>, exposed on port <code>6379</code>) so the test
+                                suite can interact with a live cache instance.</li>
+                            <li>Inject secrets: pass the Unsplash API key as an environment variable sourced securely
+                                from <code>secrets.UNSPLASH_API_KEY</code>.</li>
+                            <li>Install dependencies: run the package manager installation command.</li>
+                            <li>Execute tests: run automated tests to verify core CURD operations, Redis caching
+                                read/write behavior, and Unsplash API integration.</li>
+                        </ul>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROW 3: Question 3 Card | Question 4 Card -->
+        <div class="row mb-4">
+            <!-- Question 3 Card -->
+            <div class="col-lg-6 mb-3 mb-lg-0">
+                <div class="card question-card">
+                    <div class="card-body">
+                        <span class="question-badge">QUESTION 3</span>
+                        <h4 class="section-title">What is alert fatigue, and how would you design a small set of alerts
+                            for a student project that avoids it?</h4>
+
+                        <p><i>“Alert fatigue is a state of mental and operational exhaustion caused by an overwhelming
+                                number of alerts—many of which are low priority, false positives or otherwise
+                                non-actionable (Krantz & Jonker, 2025).”</i></p>
+                        <p>When engineers receive so many alerts that they start to ignore them.</p>
+
+                        <p>My application is rather small, so I need to create alerts only if it requires immediate
+                            human intervention:</p>
+                        <dl>
+                            <dt>Backend service down</dt>
+                            <dd>- Condition: the backend API fails health check request for 2 consecutive minutes.</dd>
+                            <dd>- The application is completely unusable for users, immediate service restart is
+                                necessary.</dd>
+                            <dt>Redis database disconnection</dt>
+                            <dd>- Condition: the backend fails to read/write to the redis cache cluster for more than 5
+                                consecutive times.</dd>
+                            <dd>- Redis is a primary data dependency; losing the cache degrades performance or crashes
+                                state handling..</dd>
+                            <dt>Unsplash API failure</dt>
+                            <dd>- Condition: external requests to the Unsplash API show an error rate over 50% in a
+                                5-minute window.</dd>
+                            <dd>- key feature of this application is not functional and requires credential or fallback
+                                checking.</dd>
+                        </dl>
+
+                        <ul>
+                            <li>Krantz, T., & Jonker, A. (2025, May 29). What is alert fatigue? IBM.
+                                https://www.ibm.com/think/topics/alert-fatigue</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 4 Card -->
+            <div class="col-lg-6">
+                <div class="card question-card">
+                    <div class="card-body">
+                        <span class="question-badge">QUESTION 4</span>
+                        <h4 class="section-title">Why should secrets (registry tokens, cluster login tokens) never be
+                            hard-coded into a CI/CD pipeline file? How does GitHub Actions handle this instead?</h4>
+
+                        <p>Hard-coded secrets into CI/CD pipeline can experience security risks</p>
+                        <ol>
+                            <li><strong>Public and internal exposure:</strong> vision control systems like GitHub track
+                                the entire
+                                history of a repository. Once a credential is committed, it remains exposed in the
+                                commit history even if deleted later. Anyone with read access to the repository can
+                                extract it.</li>
+                            <li><strong>Unauthorized access & compromise:</strong> exploited registry tokens allow
+                                attackers to delete or inject malicious code into application container images.
+                                Compromised cluster login tokens grant full or partial administrative control over
+                                deployment infrastructure, potentially leading to data breaches, service hijacking, or
+                                unauthorized resource consumption (Ejiofor, J., 2026).</li>
+                        </ol>
+                        <p>GitHub Actions helps prevent these risks by using encrypted secrets</p>
+                        <ul>
+                            <li><strong>Centralized and encrypted storage:</strong> secrets are stored outside the
+                                repository in <strong>Settings -> Secrets and variables -> Actions</strong>. The secret
+                                values are encrypted and can't be viewed as plain text after they are saved.</li>
+                            <li><strong>Dynamic variable injection:</strong> instead of writing sensitive information
+                                directly in the <code>.yml</code> file, developers can use
+                                <code>${{ secrets.SECRET_NAME }}</code> to access the stored secret during the workflow.
+                            </li>
+                            <li><strong>Runtime masking:</strong> when the workflow runs, GitHub Actions hides secret
+                                values in the logs. If a secret is printed in the logs, it is shown as <code>***</code>
+                                instead of
+                                the actual value.
+                            </li>
+                        </ul>
+
+                        <ul>
+                            <li>Ejiofor, J. (2026, February 18). Secrets management failures in CI/CD pipelines.
+                                DevOps.com. https://devops.com/secrets-management-failures-in-ci-cd-pipelines/</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+
+    <!-- SECTION: Deployment Steps Section (At the Bottom) -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="section-title">Deployment Steps</h3>
+            <p class="text-secondary">Deploy my application with CI/CD pipeline</p>
+
+            <h5 class="fw-bold mt-4">Preconditions</h5>
+            <ol>
+                <li>Create week 6 assignment in Rahti:</li>
+                <div class="row">
+                    <figure class="figure">
+                        <img src="https://a3s.fi/swift/v1/week6-media/1.png" class="figure-img img-fluid"
+                            alt="Create a project in Rahti">
+                        <figcaption class="figure-caption">Figure 1: Create week 6 assignment in Rahti.
+                        </figcaption>
+                    </figure>
+                </div>
+
+                <li>Create GitHub Workflow yml file (I choose to build a pipeline for frontend):
+                </li>
+                <figure class="figure">
+                    <img src="https://a3s.fi/swift/v1/week6-media/2.png" class="figure-img img-fluid"
+                        alt="App structure">
+                    <figcaption class="figure-caption">Figure 2: Workflow yml.
+                    </figcaption>
+                </figure>
+
+                <li>Create GitHub Actions Secrets and Variables in Github:
+                </li>
+                <figure class="figure">
+                    <img src="https://a3s.fi/swift/v1/week6-media/4.png" class="figure-img img-fluid"
+                        alt="App structure">
+                    <figcaption class="figure-caption">Figure 3: Create Github actions secrets.
+                    </figcaption>
+                </figure>
+
+                <li>Make sure all the pods are running under week6 project:
+                </li>
+                <figure class="figure">
+                    <img src="https://a3s.fi/swift/v1/week6-media/3.png" class="figure-img img-fluid"
+                        alt="App structure">
+                    <figcaption class="figure-caption">Figure 4: Pods under week6-assignment.
+                    </figcaption>
+                </figure>
+            </ol>
+
+            <hr class="my-4">
+
+            <h5 class="fw-bold">Step 1: Commit and push to my GitHub repository </h5>
+            <p></p>
+            <p>You can see the full code from my git repo - week-5.</p>
+            <ul>
+                <li><code>backend/app.py</code>: fetches task images from Unsplash, stores their URLs in MySQL, caches
+                    todo reads in Redis, and invalidates the cache after a successful insert.</li>
+                <li><code>backend/requirements.txt</code>: lists the Flask, MySQL, Redis, and HTTP client dependencies.
+                </li>
+                <li><code>db/init/init.sql</code>: defines the <code>todos</code> table, including the
+                    <code>image_url</code> column, for local Docker Compose initialization.
+                </li>
+                <li><code>frontend/index.html</code>: renders todo images and reports API errors.</li>
+                <li><code>rahti/configmap.yaml</code>, <code>rahti/redis-deployment.yaml</code>, and
+                    <code>rahti/redis-service.yaml</code>: configure the Redis service and backend connection.
+                </li>
+                <li><code>rahti/backend-deployment.yaml</code> and <code>rahti/frontend-deployment.yaml</code>:
+                    configure image versions and runtime settings.</li>
+            </ul>
+            <figure class="figure">
+                <img src="https://a3s.fi/swift/v1/week5-media/3.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 3: example code of redis-deployment.yaml.
+                </figcaption>
+            </figure>
+
+            <h5 class="fw-bold mt-4">Step 2: Configure Rahti Secrets and Application Settings</h5>
+            <p>Select the Week 5 project and apply the ConfigMap. Create the Secrets with your own values in the
+                terminal. Replace the example values locally; never put real passwords or API keys in this page, a
+                ConfigMap, or a screenshot.</p>
+            <div class="code-block">
+                <pre><code>oc project week5-assignment
+oc apply -f rahti/configmap.yaml
+
+oc create secret generic mysql-secret \
+  --from-literal=MYSQL_ROOT_PASSWORD='REPLACE_WITH_MYSQL_ROOT_PASSWORD' \
+  --from-literal=DB_PASSWORD='REPLACE_WITH_DATABASE_PASSWORD' \
+  --dry-run=client -o yaml | oc apply -f -
+
+oc create secret generic unsplash-secret \
+  --from-literal=UNSPLASH_ACCESS_KEY='REPLACE_WITH_UNSPLASH_ACCESS_KEY' \
+  --dry-run=client -o yaml | oc apply -f -</code></pre>
+            </div>
+            <figure class="figure">
+                <img src="https://a3s.fi/swift/v1/week5-media/4.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 4: Get Unsplash access key.
+                </figcaption>
+            </figure>
+            <figure class="figure">
+                <img src="https://a3s.fi/swift/v1/week5-media/5.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 5: Oc create Unsplash access key.
+                </figcaption>
+            </figure>
+
+            <h5 class="fw-bold mt-4">Step 3: Deploy MySQL and Redis</h5>
+            <p>Apply the persistent storage, database, and Redis resources. The Redis container runs as a cache without
+                RDB/AOF disk persistence because the Rahti container filesystem is not writable for Redis snapshots;
+                todo data remains persistent in MySQL.</p>
+            <div class="code-block">
+                <pre><code>oc apply -f rahti/mysql-pvc.yaml
+oc apply -f rahti/mysql-deployment.yaml
+oc apply -f rahti/mysql-service.yaml
+oc apply -f rahti/redis-deployment.yaml
+oc apply -f rahti/redis-service.yaml
+
+oc get pvc
+oc get pods
+oc get services</code></pre>
+            </div>
+            <p>Wait until the MySQL and Redis pods show <code>Running</code> and <code>Ready</code> before continuing.
+            </p>
+            <figure class="figure">
+                <img src="https://a3s.fi/swift/v1/week5-media/6.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 6: Redis running.
+                </figcaption>
+            </figure>
+
+            <h5 class="fw-bold mt-4">Step 4: Update the Todo Database Table</h5>
+            <p>The MySQL Deployment uses a PVC and does not automatically run the local
+                <code>db/init/init.sql</code> file in Rahti. Create the table after MySQL is ready. If the table already
+                exists, check for <code>image_url</code> and run the <code>ALTER TABLE</code> statement only when that
+                column is missing.
+            </p>
+            <div class="code-block">
+                <pre><code>oc exec -it deployment/db -- mysql -u appuser -p appdb</code></pre>
+            </div>
+            <div class="code-block">
+                <pre><code>CREATE TABLE IF NOT EXISTS todos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  task VARCHAR(255) NOT NULL,
+  image_url VARCHAR(1024) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+SHOW COLUMNS FROM todos LIKE 'image_url';</code></pre>
+            </div>
+            <p>If <code>SHOW COLUMNS</code> returns no row, run this migration once. Do not run it when the column
+                already exists.</p>
+            <div class="code-block">
+                <pre><code>ALTER TABLE todos ADD COLUMN image_url VARCHAR(1024) NULL;</code></pre>
+            </div>
+            <figure class="figure">
+                <img src="https://a3s.fi/swift/v1/week5-media/7.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 7: Verify Database.
+                </figcaption>
+            </figure>
+
+            <h5 class="fw-bold mt-4">Step 5: Build and Push Updated Images</h5>
+            <p>Build for <code>linux/amd64</code> so the images run on Rahti. Use a new version tag whenever you publish
+                code changes. These are the versions used for this deployment.</p>
+            <div class="code-block">
+                <pre><code>docker login
+
+docker build --platform linux/amd64 -t jessxu123/lempbackend:1.0.3 -f backend/Dockerfile .
+docker push jessxu123/lempbackend:1.0.3
+
+docker build --platform linux/amd64 -t jessxu123/lempfrontend:1.0.5 -f frontend/Dockerfile .
+docker push jessxu123/lempfrontend:1.0.5</code></pre>
+            </div>
+            <p>Docker Hub must contain both repositories, and the logged-in account must have permission to push to
+                them. The image tags in the Deployment manifests must match the tags pushed here.</p>
+            <figure class="figure">
+                <img src="https://a3s.fi/swift/v1/week5-media/8.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 8: Docker container.
+                </figcaption>
+            </figure>
+            <figure class="figure">
+                <img src="https://a3s.fi/swift/v1/week5-media/9.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 9: Docker images.
+                </figcaption>
+            </figure>
+
+            <h5 class="fw-bold mt-4">Step 6: Apply Manifests and Wait for Rollouts</h5>
+            <p>Set the image tags in <code>rahti/backend-deployment.yaml</code> and
+                <code>rahti/frontend-deployment.yaml</code> to the versions pushed above, then apply the manifests.
+                Applying a changed image starts a new rollout.
+            </p>
+            <div class="code-block">
+                <pre><code>oc apply -f rahti/configmap.yaml
+oc apply -f rahti/redis-deployment.yaml
+oc apply -f rahti/redis-service.yaml
+oc apply -f rahti/backend-deployment.yaml
+oc apply -f rahti/backend-service.yaml
+oc apply -f rahti/frontend-deployment.yaml
+oc apply -f rahti/frontend-service.yaml
+
+oc rollout status deployment/cache
+oc rollout status deployment/backend-deployment
+oc rollout status deployment/frontend-deployment
+oc get pods</code></pre>
+            </div>
+            <p>For a later code update, build and push a new image tag, change the matching
+                <code>image:</code> value in the Deployment YAML, and apply that file again.
+            </p>
+            <figure class="figure">
+                <img src="https://a3s.fi/swift/v1/week5-media/11.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 10: Apply all the files.
+                </figcaption>
+            </figure>
+            <figure class="figure">
+                <img src="https://a3s.fi/swift/v1/week5-media/10.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 11: Pods.
+                </figcaption>
+            </figure>
+
+
+            <h5 class="fw-bold mt-4">Step 7: Create the Public Route and Test the App</h5>
+            <p>Create the public HTTPS route if it does not already exist, then test the health endpoint, task list,
+                and task creation.</p>
+            <div class="code-block">
+                <pre><code>oc get route frontend || oc create route edge frontend \
+  --service=frontend-service --insecure-policy=Redirect
+oc get route frontend
+
+APP_URL="https://$(oc get route frontend -o jsonpath='{.spec.host}')"
+curl -i "$APP_URL/api/health"
+curl -i "$APP_URL/api/todos"
+curl -i -X POST "$APP_URL/api/todos" \
+  -H 'Content-Type: application/json' \
+  --data '{"task":"Week 5 verification"}'</code></pre>
+            </div>
+            <p>A successful health check returns <code>200</code>; creating a task returns <code>201</code>. Reload the
+                page to confirm the task and its Unsplash image appear. To inspect the running application, use
+                <code>oc logs deployment/backend-deployment</code> and <code>oc logs deployment/cache</code>.
+            </p>
+            <figure class="figure">
+                <img src="https://a3s.fi/swift/v1/week5-media/12.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 12: Get routes for my app.
+                </figcaption>
+            </figure>
+            <figure class="figure">
+                <img src="https://a3s.fi/swift/v1/week5-media/13.png" class="figure-img img-fluid" alt="App structure">
+                <figcaption class="figure-caption">Figure 13: Check API.
+                </figcaption>
+            </figure>
+
+
+        </div>
+    </div>
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <!-- App Dynamic Script -->
+    <script>
+        const todoForm = document.getElementById('todoForm');
+        const todoInput = document.getElementById('todoInput');
+        const todoList = document.getElementById('todoList');
+
+        function renderTodos(todos) {
+            todoList.innerHTML = '';
+            if (!todos || todos.length === 0) {
+                const emptyMessage = document.createElement('li');
+                emptyMessage.className = 'list-group-item text-muted';
+                emptyMessage.textContent = 'No tasks yet.';
+                todoList.appendChild(emptyMessage);
+                return;
+            }
+
+            todos.forEach(todo => {
+                const item = document.createElement('li');
+                item.className = 'list-group-item';
+
+                const row = document.createElement('div');
+                row.className = 'd-flex gap-3 align-items-start';
+
+                if (typeof todo.image_url === 'string' && todo.image_url) {
+                    try {
+                        const imageUrl = new URL(todo.image_url);
+                        if (imageUrl.protocol === 'https:') {
+                            const image = document.createElement('img');
+                            image.className = 'todo-image';
+                            image.src = imageUrl.href;
+                            image.alt = `Image related to ${todo.task || 'task'}`;
+                            image.loading = 'lazy';
+
+                            const photoLink = document.createElement('a');
+                            photoLink.href = 'https://unsplash.com/?utm_source=todo_list_app&utm_medium=referral';
+                            photoLink.target = '_blank';
+                            photoLink.rel = 'noopener noreferrer';
+                            photoLink.setAttribute('aria-label', 'View Unsplash');
+                            photoLink.appendChild(image);
+                            image.addEventListener('error', () => photoLink.remove(), { once: true });
+                            row.appendChild(photoLink);
+                        }
+                    } catch {
+                    }
+                }
+
+                const details = document.createElement('div');
+                details.className = 'flex-grow-1 min-w-0';
+
+                const taskText = document.createElement('div');
+                taskText.className = 'fw-semibold';
+                taskText.textContent = todo.task || '';
+                details.appendChild(taskText);
+
+                const createdAt = document.createElement('small');
+                createdAt.className = 'text-muted d-block mt-1';
+                createdAt.textContent = todo.created_at || '';
+                details.appendChild(createdAt);
+
+                if (todo.image_url) {
+                    const attribution = document.createElement('a');
+                    attribution.className = 'small text-secondary';
+                    attribution.href = 'https://unsplash.com/?utm_source=todo_list_app&utm_medium=referral';
+                    attribution.target = '_blank';
+                    attribution.rel = 'noopener noreferrer';
+                    attribution.textContent = 'Image via Unsplash';
+                    details.appendChild(attribution);
+                }
+
+                row.appendChild(details);
+                item.appendChild(row);
+                todoList.appendChild(item);
+            });
+        }
+
+        async function loadTodos() {
+            const response = await fetch('/api/todos');
+            if (!response.ok) {
+                throw new Error(`GET /api/todos failed (${response.status})`);
+            }
+            renderTodos(await response.json());
+        }
+
+        todoForm.addEventListener('submit', async event => {
+            event.preventDefault();
+            const task = todoInput.value.trim();
+            if (!task) return;
+
+            try {
+                const response = await fetch('/api/todos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ task })
+                });
+
+                const result = await response.json();
+                if (!response.ok) {
+                    throw new Error(result.error || `POST /api/todos failed (${response.status})`);
+                }
+
+                todoInput.value = '';
+                await loadTodos();
+            } catch (error) {
+                const errorMessage = document.createElement('li');
+                errorMessage.className = 'list-group-item text-danger';
+                errorMessage.textContent = `Unable to add task: ${error.message}`;
+                todoList.prepend(errorMessage);
+            }
+        });
+
+        loadTodos().catch(error => {
+            const errorMessage = document.createElement('li');
+            errorMessage.className = 'list-group-item text-danger';
+            errorMessage.textContent = `Unable to load tasks: ${error.message}`;
+            todoList.replaceChildren(errorMessage);
+        });
+    </script>
+</body>
+
+</html>
