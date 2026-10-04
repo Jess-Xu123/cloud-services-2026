@@ -26,7 +26,9 @@ jobs:
           context: ./week-6
           file: ./week-6/frontend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/todo-frontend:${{ github.sha }}
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/todo-frontend:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME }}/todo-frontend:latest
 
       - name: Install OpenShift CLI (oc)
         uses: redhat-actions/openshift-tools-installer@v3
@@ -38,6 +40,6 @@ jobs:
         run: |
           oc login --token=${{ secrets.RAHTI_TOKEN }} --server=${{ secrets.RAHTI_SERVER }}
           oc project week6-assignment
-          echo "Deploying image to week6-assignment: ${DOCKER_USER}/todo-frontend:${COMMIT_SHA}"
+          echo "Deploying image to week6-assignment: ${{ secrets.DOCKER_USERNAME }}/todo-frontend:${{ github.sha }}"
           oc set image deployment/frontend-deployment frontend=${{ secrets.DOCKER_USERNAME }}/todo-frontend:${{ github.sha }}
           oc rollout status deployment/frontend-deployment --timeout=180s
