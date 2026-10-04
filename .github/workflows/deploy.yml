@@ -38,4 +38,5 @@ jobs:
         run: |
           oc login --token=${{ secrets.RAHTI_TOKEN }} --server=${{ secrets.RAHTI_SERVER }}
           oc set image deployment/frontend-deployment frontend=${{ secrets.DOCKER_USERNAME }}/todo-frontend:${{ github.sha }}
+          oc rollout restart deployment/frontend-deployment
           oc rollout status deployment/frontend-deployment --timeout=180s
