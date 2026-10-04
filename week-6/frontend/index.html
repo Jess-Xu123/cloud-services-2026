@@ -523,17 +523,7 @@ oc logs deployment/frontend-deployment -n week6-assignment --tail=20</code></pre
                         <figure class="figure">
                             <img src="https://a3s.fi/swift/v1/week6-media/10.png" class="figure-img img-fluid"
                                 alt="App structure">
-                            <figcaption class="figure-caption">Figure 10: Verify the liveness.
-                            </figcaption>
-                        </figure>
-                        <p>Figure 11 should show an actual JSON log line from the newly deployed frontend image,
-                            including
-                            the request path, response status, and response time. If the output is still the old common
-                            Nginx format, first verify that the current Deployment uses the new SHA-tagged image.</p>
-                        <figure class="figure">
-                            <img src="https://a3s.fi/swift/v1/week6-media/11.png" class="figure-img img-fluid"
-                                alt="App structure">
-                            <figcaption class="figure-caption">Figure 11: frontend logs.
+                            <figcaption class="figure-caption">Figure 10: Verify the liveness and readiness
                             </figcaption>
                         </figure>
 
@@ -555,21 +545,22 @@ oc rollout status deployment/frontend-deployment -n week6-assignment</code></pre
                         </div>
                         <p>During the test the frontend pod was <code>Running</code> but <code>0/1 Ready</code>, and the
                             Service had
-                            no endpoints. After restoring port <code>8080</code>, the pod returned to
+                            no endpoints.
+                        </p>
+                        <figure class="figure">
+                            <img src="https://a3s.fi/swift/v1/week6-media/11.png" class="figure-img img-fluid"
+                                alt="App structure">
+                            <figcaption class="figure-caption">Figure 11: Readiness failing.
+                            </figcaption>
+                        </figure>
+                        <p>After restoring port <code>8080</code>, the pod returned to
                             <code>1/1 Ready</code> and its
                             endpoint was added again.
                         </p>
                         <figure class="figure">
                             <img src="https://a3s.fi/swift/v1/week6-media/12.png" class="figure-img img-fluid"
                                 alt="App structure">
-                            <figcaption class="figure-caption">Figure 12: Readiness failing.
-                            </figcaption>
-                        </figure>
-
-                        <figure class="figure">
-                            <img src="https://a3s.fi/swift/v1/week6-media/13.png" class="figure-img img-fluid"
-                                alt="App structure">
-                            <figcaption class="figure-caption">Figure 13: Change the port back and check out the logs.
+                            <figcaption class="figure-caption">Figure 12: Change the port back and check out the logs.
                             </figcaption>
                         </figure>
                         <p>A possible rule is to alert when the 5xx ratio exceeds 5% over a rolling five-minute window,
