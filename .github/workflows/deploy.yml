@@ -37,6 +37,7 @@ jobs:
       - name: Deploy Frontend to Rahti
         run: |
           oc login --token=${{ secrets.RAHTI_TOKEN }} --server=${{ secrets.RAHTI_SERVER }}
+          oc project week6-assignment
+          echo "Deploying image to week6-assignment: ${DOCKER_USER}/todo-frontend:${COMMIT_SHA}"
           oc set image deployment/frontend-deployment frontend=${{ secrets.DOCKER_USERNAME }}/todo-frontend:${{ github.sha }}
-          oc rollout restart deployment/frontend-deployment
           oc rollout status deployment/frontend-deployment --timeout=180s
