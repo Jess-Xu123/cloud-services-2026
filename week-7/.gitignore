@@ -1,0 +1,11 @@
+.terraform/
+.opentofu/
+*.tfstate.*
+*.tfstate
+crash.log
+clouds.yaml
+secure.yaml
+*.pem
+terraform.tfvars
+*.auto.tfvars
+terraform.tfstate.backup

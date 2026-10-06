@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 6 Assignment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .card {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+            background-color: #ffffff;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .card-body {
+            padding: 1.75rem;
+        }
+
+        .section-title {
+            color: #0f172a;
+            font-weight: 700;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-card {
+            border-top: 4px solid #2563eb;
+            height: 100%;
+        }
+
+        .question-badge {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 0.375rem;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background-color: #0f172a;
+            color: #f8fafc;
+            border-radius: 0.5rem;
+            padding: 1rem 1.25rem;
+            font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .figure {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: min(100%, 1040px);
+            margin: 1rem auto 1.5rem;
+        }
+
+        .figure-img {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            max-height: 600px;
+            margin: 0 0 0.5rem;
+            object-fit: contain;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+        }
+
+        .figure video {
+            aspect-ratio: 16 / 9;
+            height: auto;
+        }
+
+        .figure-caption {
+            width: 100%;
+            text-align: center;
+            color: #64748b;
+            line-height: 1.45;
+        }
+
+        .problem-item {
+            display: grid;
+            grid-template-columns: minmax(170px, 0.8fr) minmax(0, 1fr) minmax(0, 1.2fr);
+            gap: 1rem;
+            padding: 1rem 0;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .problem-item h6,
+        .problem-item p {
+            margin: 0;
+        }
+
+        .problem-detail strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            color: #334155;
+        }
+
+        .todo-image {
+            width: 88px;
+            height: 72px;
+            flex: 0 0 auto;
+            object-fit: cover;
+            border-radius: 0.375rem;
+        }
+
+        @media (max-width: 576px) {
+            .problem-item {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 0.25rem;
+            }
+
+            .todo-image {
+                width: 72px;
+                height: 64px;
+            }
+
+            .figure-img {
+                max-height: 320px;
+            }
+
+            .figure video {
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container my-5">
+        <!-- Main Title Header -->
+        <div class="mb-4">
+            <h1 class="fw-bold text-dark">Week 7 Assignment</h1>
+            <p class="text-secondary fs-5"></p>
+        </div>
+
+        <!-- ROW 1: Question 1 Card | Question 2 Card -->
+        <div class="row mb-4">
+            <!-- Question 1 Card -->
+            <div class="col-lg-6 mb-3 mb-lg-0">
+                <div class="card question-card">
+                    <div class="card-body">
+                        <span class="question-badge">QUESTION 1</span>
+                        <h4 class="section-title">What is Infrastructure as Code, and which problems of manually created
+                            infrastructure does it solve? Use your own Week 1 VM setup as an example. </h4>
+                        <p><strong>Infrastructure as Code:</strong> is a way of managing infrastructure such as
+                            networks, virtual machines, and load balancers using configuration files instead of manually
+                            configuring them (Hewlett Packard Enterprise, n.d.).
+                        </p>
+                        <p>Instead of clicking around in a web dashboard to set up a server, configure a network, and
+                            attach storage by hand, IaC provides a way to replace manual configuration with
+                            configuration files.</p>
+                        <p>Based on my Week 1 VM setup, I think IaC solves the <strong>human error and inconsistency
+                                problem</strong>. I needed to manually set up the virtual machine and server on C-Pouta.
+                            If I missed a checkbox
+                            or misconfigured a security group, or mistyped an IP address, it could lead to severe
+                            downtime
+                            or security breaches. </p>
+                        <p>IaC can help me automate the infrastructure setup so that the same configuration can be
+                            applied every time without manual typos or inconsistent settings.</p>
+                        <p>Beside the human error and inconsistency issue, manual configuration also makes
+                            <strong>version control and auditability more difficult</strong>.
+                        </p>
+                        <p>When I manually setup the virtual machine and server, it is difficult to track when and why
+                            a setting was changed. Reverting a bad configuration change also requires manual
+                            troubleshooting. With IaC, the configuration files can be stored in Git, making changes
+                            easier to track, review, and revert.</p>
+
+                        <ul>
+                            <li>Hewlett Packard Enterprise. (n.d.). What is infrastructure as code (IaC)? HPE.
+                                https://www.hpe.com/fi/en/what-is/infrastructure-as-code.html</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2 Card -->
+            <div class="col-lg-6">
+                <div class="card question-card">
+                    <div class="card-body">
+                        <span class="question-badge">QUESTION 2</span>
+                        <h4 class="section-title">Explain the difference between declarative and imperative
+                            infrastructure automation. What does idempotency mean, and why is it important?</h4>
+
+                        <p><strong>Declarative:</strong> defines the desired end state of the infrastructure rather than
+                            execution steps. You specify what the final result should look like in configuration files.
+                            The tool automatically compares the code with the real-world state and makes only the
+                            necessary changes to reach that end state.</p>
+                        <p><strong>Imperative:</strong> defines the exact sequence of steps required to achieve a
+                            configuration (e.g., shell scripts or CLI commands). You must instruct the machine
+                            step-by-step. If an error occurs midway, the process halts, leaving the infrastructure in an
+                            incomplete or inconsistent state.
+                        </p>
+                        <p><strong>Idempotency:</strong> means that executing the same operation multiple times yields
+                            the exact same final result as executing it once, without causing extra side effects.</p>
+                        <p> In infrastructure management, network timeouts or deployment failures are common. An
+                            idempotent tool (OpenTofu or Terraform) allows you to safely re-run the deployment command
+                            without creating duplicate resources or breaking existing ones.
+                        </p>
+                        <ul>
+                            <li>Hewlett Packard Enterprise. (n.d.). What is infrastructure as code (IaC)? HPE.
+                                https://www.hpe.com/fi/en/what-is/infrastructure-as-code.html</li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROW 3: Question 3 Card | Question 4 Card -->
+        <div class="row mb-4">
+            <!-- Question 3 Card -->
+            <div class="col-lg-6 mb-3 mb-lg-0">
+                <div class="card question-card">
+                    <div class="card-body">
+                        <span class="question-badge">QUESTION 3</span>
+                        <h4 class="section-title">Why was OpenTofu created? Compare Terraform and OpenTofu — would the
+                            choice between them matter to you as a developer, or to a company?</h4>
+
+                        <p>OpenTofu and Terraform are both infrastructure-as-code tools. They use the same configuration
+                            language (HCL), the same state format, and the same providers. Therefore, the main
+                            differences are their licensing, governance, and roadmap direction.</p>
+
+                        <p>OpenTofu was created because HashiCorp changed Terraform's license from the open-source
+                            Mozilla public License (MPL 2.0) to the restricted Business Source License (BSL) in August
+                            2023 (Azhybaeva, 2026).</p>
+
+                        <p>OpenTofu was created as a free, open-source alternative and donated to the Linux
+                            Foundation to ensure vendor neutrality and prevent single-company control. It also
+                            guarantees a project roadmap driven by community needs rather than corporate profit
+                            (Azhybaeva, 2026).</p>
+
+                        <p><strong>As a developer:</strong> I don't think the choice matters much for learning the basic
+                            IaC concepts, because both tools use HCL and have very similar workflows. The skills are
+                            also transferable: knowing how to use one makes it easier to learn the other.</p>
+
+                        <p><strong>As a company:</strong> it would matter because:
+                        <ol>
+                            <li>Licensing risk: companies worry about future licensing shifts or compliance violations
+                                under non-standard open-source terms like BSL.</li>
+                            <li>Ecosystem requirements: companies deeply embedded in HashiCorp Cloud Platform services
+                                may prefer Terraform, while greenfield projects or companies with strict open-source
+                                requirements may prefer OpenTofu.</li>
+                        </ol>
+                        </p>
+                        <ul>
+                            <li>Azhybaeva, A. (2026, June 26). OpenTofu vs Terraform (2026): The fork decision
+                                explained. DevSecOps.ae. https://devsecops.ae/opentofu-vs-terraform/</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 4 Card -->
+            <div class="col-lg-6">
+                <div class="card question-card">
+                    <div class="card-body">
+                        <span class="question-badge">QUESTION 4</span>
+                        <h4 class="section-title">What is the state file used for? Why should it not be committed to a
+                            Git repository, and how do teams usually share it instead?</h4>
+
+                        <p>The state file <code>*.tfstate.*</code> and <code>*.tfstate</code> serves as a single source
+                            of truth mapping the IaC configuration code to real-world cloud resources. It tracks
+                            resource IDs, configurations, and metadata so OpenTofu knows what has already been created,
+                            modified, or needs to be deleted.</p>
+                        <p>Image if we are building an office building, <code>main.tf</code> is the main architectural
+                            blueprint
+                            and <code>cloud.yaml</code> is the access pass and credentials that grant OpenTofu
+                            permission to enter and operate within the cloud infrastructure.
+                            <code>terraform.tfstate</code> is the asset inventory record. It maps each component in the
+                            blueprint to the actual physical resources created in the cloud. When you add a new room to
+                            the design, OpenTofu references this inventory to know exactly what already exists, enabling
+                            it to apply only the necessary changes rather than rebuilding from scratch.
+                        </p>
+                        <p> The <code>*.tfstate.backup</code> file is automatically generated as a fallback copy before
+                            any state modification.</p>
+
+                        <p>It shouldn't be committed to a Git repository because (Wagh, 2022):</p>
+                        <ol>
+                            <li><b>security risks:</b> state files store sensitive data in plain text, such as
+                                passwords, private keys and environment variables. Committing them to Git exposes
+                                credentials to unauthorized users.</li>
+                            <li><b>State corruption and race conditions:</b> If multiple team members commit different
+                                version of the local state file to Git, it creates merge conflicts and corrupts the
+                                infrastructure's tracking record.</li>
+                        </ol>
+                        <p>Teams use a <b>remote backend</b> such as S3-compatible object storage like CSC Allas to
+                            store the state file centrally. Remote backends support <b>state locking</b>, which prevents
+                            simultaneous executions from messing up the infrastructure state while ensuring every team
+                            member works against the exact same up-to-date record.</p>
+
+
+                        <ul>
+                            <li>Wagh, R. (2022, December 27). Why you should not store Terraform state file (.tfstate)
+                                inside Git repository? Jhooq. https://jhooq.com/terraform-do-not-store-tfstate-in-git/
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+
+    <!-- SECTION: Deployment Steps Section (At the Bottom) -->
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="card question-card mb-4">
+                    <div class="card-body">
+                        <h3 class="section-title">Deployment Steps</h3>
+                        <p class="text-secondary">Deploy my single-page application to C-Pouta using OpenTofu</p>
+
+                        <h5 class="fw-bold mt-4">Preconditions</h5>
+                        <ol>
+                            <li>Create .gitignore file to prevent uploading credentials:</li>
+                            <div class="row">
+                                <figure class="figure">
+                                    <img src="https://a3s.fi/swift/v1/week7-media/1.png" class="figure-img img-fluid"
+                                        alt=".gitignore file">
+                                    <figcaption class="figure-caption">Figure 1: .gitignore file.
+                                    </figcaption>
+                                </figure>
+                            </div>
+
+                            <li>Create SSH public key:
+                            </li>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/2.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 2: public key.
+                                </figcaption>
+                            </figure>
+
+                            <li>Create application credential in C-Pouta:
+                            </li>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/3.png" class="figure-img img-fluid"
+                                    alt="Create application credential">
+                                <figcaption class="figure-caption">Figure 3: Create application credential.
+                                </figcaption>
+                            </figure>
+
+                            <hr class="my-4">
+
+                            <h5 class="fw-bold">Step 1: Create configuration structure and files </h5>
+                            <p>Create versions.tf</p>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/4.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="versions.tf">Figure 4: versions.tf code.
+                                </figcaption>
+                            </figure>
+
+                            <p>Create variables.tf (see the complete code in Git repo)</p>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/5.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="versions.tf">Figure 5: variables.tf code.
+                                </figcaption>
+                            </figure>
+
+                            <p>Create terraform.tfvars and check public IP </p>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/6.1.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="versions.tf">Figure 6.1: check public IP.
+                                </figcaption>
+                            </figure>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/6.2.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="versions.tf">Figure 6.2: verify terraform.tfvars creation.
+                                </figcaption>
+                            </figure>
+
+                            <p>Create cloud-init.yaml file</p>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/7.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="versions.tf">Figure 7: cloud-init.yaml.
+                                </figcaption>
+                            </figure>
+
+                            <h5 class="fw-bold mt-4">Step 2: Initialization and Code Verification</h5>
+                            <p>Initialize the project with
+                                <code>tofu init</code>.
+                                It will enable OpenTofu to communicate with cPouta.
+                            </p>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/8.1.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 8.1: Initialize the project.
+                                </figcaption>
+                            </figure>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/8.2.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 8.2: Validate files.
+                                </figcaption>
+                            </figure>
+
+                            <h5 class="fw-bold mt-4">Step 3: Generate a deployment plan</h5>
+                            <p>I will ran <code>tofu plan</code> first to connect OpenTofu with cPouta and generate a
+                                deployment plan. After verifying
+                                the resource changes, I will execute<code> tofu apply </code> to deploy the
+                                infrastructure.</p>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/9.1.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 9.1: deployment plan.
+                                </figcaption>
+                            </figure>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/9.2.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 9.2: deployment plan.
+                                </figcaption>
+                            </figure>
+                            <p>Tofu apply to create all the resources on cPouta</p>
+                            <p>It shows 1 resource added because I encountered errors when applying
+                                <code>tofu apply</code>, after I fixed the issues, and applied again. It remembered the
+                                previous 6 resources has been created, so it only needs to add 1 resource.
+                            </p>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/9.3.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 9.3: Apply deployment plan.
+                                </figcaption>
+                            </figure>
+
+
+                            <h5 class="fw-bold mt-4">Step 4: Verify web page and SSH access restrictions (Security group
+                                verification)</h5>
+                            <p>Verify web page</p>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/9.4.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 10.1: Default web page.
+                                </figcaption>
+
+                                <p>Verify SSH access restrictions</p>
+                            </figure>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/10.2.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 10.2: Default web page.
+                                </figcaption>
+                            </figure>
+
+                            <p>Verify instance on cPouta</p>
+                            </figure>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/10.3.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 10.3: Verify VM on cPouta.
+                                </figcaption>
+                            </figure>
+
+                            <h5 class="fw-bold mt-4">Experiment 1: Change</h5>
+                            <p> I updated the page message in <code>variable.tf</code> file, and changed flavor name
+                                from tiny to small.
+                            </p>
+                            <p><b>Prediction:</b>modifying the web page text only changes a variable and doesn't require
+                                recreating the virtual machine; However, changing the machine configuration (flavor)
+                                causes OpenTofu to destroy the old virtual machine and create a new one.</p>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/11.1.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 11.1: Change page message.
+                                </figcaption>
+                            </figure>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/11.2.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 11.2: Change flavor name.
+                                </figcaption>
+                            </figure>
+                            <p><b>Result:</b> OpenTofu identified that <code>openstack_compute_instance_v2.web</code>
+                                must be replaced. The output flagged that modifying <code>user_data</code> explicitly
+                                <code># forces replacement</code>.
+                            </p>
+                            <p> The <code>user_data</code> script (cloud-init) is only executed during the initial
+                                first-boot of the instance. Once a virtual machine is provisioned, changing its
+                                initialization script or altering its hardware flavor definition requires OpenStack to
+                                terminate the existing instance and spin up a new instance with the updated attributes.
+                            </p>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/11.3.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 11.3: Result of experiment 1.
+                                </figcaption>
+                            </figure>
+
+                            <h5 class="fw-bold mt-4">Experiment 2: Drift</h5>
+                            <p> I tested this by deleting the <code>80(HTTP)</code> in the security groups under my VM.
+                            </p>
+                            <p><b>Prediction:</b><code>tofu plan</code> will detect the missing security group rule for
+                                port 80 in the cloud and notify me to recreate it, in order to restore the configuration
+                                to the correct state defined in the code.</p>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/12.1.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 12.1: delete the port 80.
+                                </figcaption>
+                            </figure>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/12.2.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 12.2: result of experiment 2.
+                                </figcaption>
+                            </figure>
+
+                            <h5 class="fw-bold mt-4">Experiment 3: Destroy & rebuild</h5>
+
+                            <p><b>Prediction:</b> when <code>tofu destroy</code> is executed, the outermost resources in
+                                the dependency chain (virtual machine and floating IPs) are deleted first, then it is
+                                security groups and network ports.</p>
+                            <p>When <code>tofu apply</code> is executed, all resources are recreated in the correct
+                                dependency order, and web access is restored.</p>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/13.1.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 13.1: result of applying destroy.
+                                </figcaption>
+                            </figure>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/13.2.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 13.2: verify web page.
+                                </figcaption>
+                            </figure>
+
+                            <p> Result of <code>tofu apply</code> after destroying:</p>
+                            <figure class="figure">
+                                <img src="https://a3s.fi/swift/v1/week7-media/13.3.png" class="figure-img img-fluid"
+                                    alt="App structure">
+                                <figcaption class="figure-caption">Figure 13.3: result of applying Tofu.
+                                </figcaption>
+                            </figure>
+                            <p><b>Explanation:</b> OpenTofu uses a Dependency Directed Acyclic Graph (DAG) to determine
+                                execution order. During destroy, it cleans up top-level dependent resources first before
+                                removing foundational base components. During apply, it builds from base
+                                network/security components up to the VM and Floating IP, achieving total
+                                reproducibility. </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="container my-5" aria-labelledby="reflection-title">
+        <div class="card question-card mb-4">
+            <div class="card-body">
+                <h3 class="section-title" id="reflection-title">4. Reflection: Manual vs. Code</h3>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Aspect</th>
+                                <th scope="col">Manual setup (Week 1)</th>
+                                <th scope="col">Infrastructure as Code (IaC)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Effort</th>
+                                <td>Creating each setup required dozens of clicks in the web interface. It was
+                                    time-consuming and easy to miss a security rule or configuration option.</td>
+                                <td>Writing the code and troubleshooting it takes time initially, but each subsequent
+                                    deployment can be completed in seconds.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Repeatability</th>
+                                <td>It is difficult to ensure that two servers have exactly the same configuration,
+                                    making human error likely.</td>
+                                <td>The same code can be applied repeatedly to produce consistent baseline
+                                    infrastructure across environments.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Security</th>
+                                <td>Overly permissive security group rules can be left behind, such as allowing SSH
+                                    access from <code>0.0.0.0/0</code>.</td>
+                                <td>Security rules are defined in code, with validation such as restricting access to a
+                                    single IP in CIDR notation. Git also provides an audit trail for configuration
+                                    changes.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Applicability</th>
+                                <td>Best suited to temporary, quick tests or prototype validation.</td>
+                                <td>Suitable for production, replicating development, test, and production environments,
+                                    and disaster recovery.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container my-5" aria-labelledby="problems-title">
+        <div class="card question-card mb-4">
+            <div class="card-body">
+                <h3 class="section-title" id="problems-title">5. Problems Encountered &amp; Solutions</h3>
+                <div class="problem-item">
+                    <h6 class="fw-bold">Problem 1</h6>
+                    <p><code>cloud-init</code> scripts may fail to run correctly when Windows and Mac line endings are
+                        incompatible.</p>
+                    <div class="problem-detail">
+                        <strong>Solution</strong>
+                        <p>In the <code>user_data</code> attribute in <code>main.tf</code>, I used
+                            <code>replace(..., "\r\n", "\n")</code> to normalize line endings.</p>
+                    </div>
+                </div>
+                <div class="problem-item">
+                    <h6 class="fw-bold">Problem 2</h6>
+                    <p>There is a risk of exposing sensitive credentials in <code>terraform.tfvars</code> or other
+                        configuration files.</p>
+                    <div class="problem-detail">
+                        <strong>Solution</strong>
+                        <p>I created a <code>.gitignore</code> file at the start of the project to exclude
+                            <code>*.tfvars</code>, <code>clouds.yaml</code>, and state files such as
+                            <code>*.tfstate</code> from Git version control.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <!-- App Dynamic Script -->
+    <script>
+        const todoForm = document.getElementById('todoForm');
+        const todoInput = document.getElementById('todoInput');
+        const todoList = document.getElementById('todoList');
+
+        function renderTodos(todos) {
+            todoList.innerHTML = '';
+            if (!todos || todos.length === 0) {
+                const emptyMessage = document.createElement('li');
+                emptyMessage.className = 'list-group-item text-muted';
+                emptyMessage.textContent = 'No tasks yet.';
+                todoList.appendChild(emptyMessage);
+                return;
+            }
+
+            todos.forEach(todo => {
+                const item = document.createElement('li');
+                item.className = 'list-group-item';
+
+                const row = document.createElement('div');
+                row.className = 'd-flex gap-3 align-items-start';
+
+                if (typeof todo.image_url === 'string' && todo.image_url) {
+                    try {
+                        const imageUrl = new URL(todo.image_url);
+                        if (imageUrl.protocol === 'https:') {
+                            const image = document.createElement('img');
+                            image.className = 'todo-image';
+                            image.src = imageUrl.href;
+                            image.alt = `Image related to ${todo.task || 'task'}`;
+                            image.loading = 'lazy';
+
+                            const photoLink = document.createElement('a');
+                            photoLink.href = 'https://unsplash.com/?utm_source=todo_list_app&utm_medium=referral';
+                            photoLink.target = '_blank';
+                            photoLink.rel = 'noopener noreferrer';
+                            photoLink.setAttribute('aria-label', 'View Unsplash');
+                            photoLink.appendChild(image);
+                            image.addEventListener('error', () => photoLink.remove(), { once: true });
+                            row.appendChild(photoLink);
+                        }
+                    } catch {
+                    }
+                }
+
+                const details = document.createElement('div');
+                details.className = 'flex-grow-1 min-w-0';
+
+                const taskText = document.createElement('div');
+                taskText.className = 'fw-semibold';
+                taskText.textContent = todo.task || '';
+                details.appendChild(taskText);
+
+                const createdAt = document.createElement('small');
+                createdAt.className = 'text-muted d-block mt-1';
+                createdAt.textContent = todo.created_at || '';
+                details.appendChild(createdAt);
+
+                if (todo.image_url) {
+                    const attribution = document.createElement('a');
+                    attribution.className = 'small text-secondary';
+                    attribution.href = 'https://unsplash.com/?utm_source=todo_list_app&utm_medium=referral';
+                    attribution.target = '_blank';
+                    attribution.rel = 'noopener noreferrer';
+                    attribution.textContent = 'Image via Unsplash';
+                    details.appendChild(attribution);
+                }
+
+                row.appendChild(details);
+                item.appendChild(row);
+                todoList.appendChild(item);
+            });
+        }
+
+        async function loadTodos() {
+            const response = await fetch('/api/todos');
+            if (!response.ok) {
+                throw new Error(`GET /api/todos failed (${response.status})`);
+            }
+            renderTodos(await response.json());
+        }
+
+        todoForm.addEventListener('submit', async event => {
+            event.preventDefault();
+            const task = todoInput.value.trim();
+            if (!task) return;
+
+            try {
+                const response = await fetch('/api/todos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ task })
+                });
+
+                const result = await response.json();
+                if (!response.ok) {
+                    throw new Error(result.error || `POST /api/todos failed (${response.status})`);
+                }
+
+                todoInput.value = '';
+                await loadTodos();
+            } catch (error) {
+                const errorMessage = document.createElement('li');
+                errorMessage.className = 'list-group-item text-danger';
+                errorMessage.textContent = `Unable to add task: ${error.message}`;
+                todoList.prepend(errorMessage);
+            }
+        });
+
+        loadTodos().catch(error => {
+            const errorMessage = document.createElement('li');
+            errorMessage.className = 'list-group-item text-danger';
+            errorMessage.textContent = `Unable to load tasks: ${error.message}`;
+            todoList.replaceChildren(errorMessage);
+        });
+    </script>
+</body>
+
+</html>
