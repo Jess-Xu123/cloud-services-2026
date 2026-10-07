@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 6 Assignment</title>
+    <title>Week 7 Assignment</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
@@ -141,10 +141,6 @@
 
             .figure-img {
                 max-height: 320px;
-            }
-
-            .figure video {
-                max-height: none;
             }
         }
     </style>
@@ -637,7 +633,8 @@
                     <div class="problem-detail">
                         <strong>Solution</strong>
                         <p>In the <code>user_data</code> attribute in <code>main.tf</code>, I used
-                            <code>replace(..., "\r\n", "\n")</code> to normalize line endings.</p>
+                            <code>replace(..., "\r\n", "\n")</code> to normalize line endings.
+                        </p>
                     </div>
                 </div>
                 <div class="problem-item">
@@ -648,9 +645,102 @@
                         <strong>Solution</strong>
                         <p>I created a <code>.gitignore</code> file at the start of the project to exclude
                             <code>*.tfvars</code>, <code>clouds.yaml</code>, and state files such as
-                            <code>*.tfstate</code> from Git version control.</p>
+                            <code>*.tfstate</code> from Git version control.
+                        </p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container my-5" aria-labelledby="file-overview-title">
+        <div class="card question-card mb-4">
+            <div class="card-body">
+                <h3 class="section-title" id="file-overview-title">File Overview and Resource Dependencies</h3>
+                <p>Each file has a different job. Together, they provide the settings and instructions that
+                    <code>main.tf</code> needs to create the infrastructure.
+                </p>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">File</th>
+                                <th scope="col">What it does</th>
+                                <th scope="col">How it relates to <code>main.tf</code></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row"><code>main.tf</code></th>
+                                <td>Defines the OpenStack resources, such as the network port, security group, VM, and floating IP.</td>
+                                <td>Connects the provider, input values, and cloud-init template to create the infrastructure.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><code>versions.tf</code></th>
+                                <td>Sets the required OpenTofu and OpenStack provider versions.</td>
+                                <td>Ensures the tools and provider used to read and run <code>main.tf</code> are consistent.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><code>variables.tf</code></th>
+                                <td>Lists the input values the project can use, their types, and checks such as valid SSH CIDR format.</td>
+                                <td>Declares the inputs that <code>main.tf</code> reads, for example with <code>var.ssh_allowed_cidr</code>.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><code>terraform.tfvars</code></th>
+                                <td>Stores the values for inputs that are specific to this setup, such as an SSH public key path and allowed IP range.</td>
+                                <td>OpenTofu passes these values to the variables used by <code>main.tf</code>. This file is ignored by Git.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><code>outputs.tf</code></th>
+                                <td>Defines useful results to show after deployment.</td>
+                                <td>Reads the floating IP created in <code>main.tf</code> and displays the IP address and website URL.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><code>cloud-init.yaml</code></th>
+                                <td>Gives the new VM its first-boot instructions, such as installing Apache and creating a web page.</td>
+                                <td><code>main.tf</code> fills in the template values and sends the result to the VM as <code>user_data</code>.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><code>clouds.yaml</code></th>
+                                <td>Stores the OpenStack cloud connection and authentication settings.</td>
+                                <td>The OpenStack provider configured in <code>versions.tf</code> uses this file to connect to CSC cPouta.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><code>.gitignore</code></th>
+                                <td>Tells Git not to track matching local files, such as credentials and OpenTofu state files.</td>
+                                <td>Does not change how <code>main.tf</code> runs; it helps keep sensitive and local files out of Git.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h5 class="fw-bold mt-4">Simple Dependency Diagram</h5>
+                <p>Supporting files provide settings to the provider and <code>main.tf</code>. The arrows below show
+                    which resources depend on other resources.</p>
+                <div class="code-block">
+                    <pre aria-label="File and resource dependency diagram">versions.tf ── selects the OpenStack provider version
+clouds.yaml ── provides cloud credentials ──&gt; OpenStack provider
+
+variables.tf &lt;── values from terraform.tfvars
+       │
+       └── input values ─────────────────────&gt; main.tf
+cloud-init.yaml ── template for user_data ───&gt; main.tf
+
+main.tf resource dependencies:
+
+Project network lookup ──────────┐
+Security group ──────────────────┼──&gt; Network port ──┬──&gt; VM
+                                   │                    └──&gt; Floating IP
+Security group ──&gt; SSH/HTTP rules │
+SSH keypair ─────────────────────────────────────────────&gt; VM
+cloud-init.yaml template ─────────────────────────────────&gt; VM
+
+outputs.tf ── reads the Floating IP ──&gt; public IP and website URL
+.gitignore ── keeps selected local files out of Git</pre>
+                </div>
+                <p class="text-secondary mb-0">In short, <code>main.tf</code> connects the inputs and templates to
+                    OpenStack resources. OpenTofu follows these dependencies to create the network port and VM in
+                    the right order.</p>
             </div>
         </div>
     </section>
