@@ -1,0 +1,4 @@
+student_name        = "student_name"
+ssh_allowed_cidr    = "YOUR_PUBLIC_IP/32"
+ssh_public_key_path = "~/.ssh/id_ed25519.pub"
+project_network     = "project_number"
